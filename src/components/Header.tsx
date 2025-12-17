@@ -1,26 +1,38 @@
-import {StyleSheet} from '@amazon-devices/react-native-kepler/types';
 import React from 'react';
-import {Image, View} from 'react-native/types';
+import {Image, StyleSheet, View} from 'react-native';
 
 import {IMAGES} from '../constants/Assets';
+import {NAV_ITEMS} from '../constants/Navigation';
+import NavItem from './NavItem';
 const Header = () => {
   return (
     <View style={styles.container}>
-      <Image source={IMAGES.Logo} style={styles.Logo} resizeMode="contain" />
+      <Image source={IMAGES.Logo} style={styles.logo} resizeMode="contain" />
+      <View style={styles.navContainer}>
+        {NAV_ITEMS.map((item) => (
+          <NavItem key={item.id} title={item.title} />
+        ))}
+      </View>
     </View>
   );
 };
 
 export default React.memo(Header);
-
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: 32,
+    paddingTop: 32,
+    gap: 48,
   },
-  Logo: {
-    width: 120,
-    height: 40,
+  logo: {
+    width: 305,
+    height: 60,
+  },
+  navContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 32,
   },
 });
