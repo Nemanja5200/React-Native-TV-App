@@ -1,13 +1,16 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {ImageBackground, StyleSheet} from 'react-native';
 import Header from '../components/Header';
-import {COLORS} from '../styles/Colors';
+import {IMAGE} from '../constants/Image';
 
 const HomeScreen = () => {
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      source={IMAGE.BACKGROUND}
+      style={styles.container}
+      resizeMode="cover">
       <Header />
-    </View>
+    </ImageBackground>
   );
 };
 
@@ -16,7 +19,6 @@ export default React.memo(HomeScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.DARK_GREY,
   },
   text: {
     fontSize: 32,
