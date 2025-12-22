@@ -2,6 +2,7 @@ import React from 'react';
 import {ImageBackground, StyleSheet, View} from 'react-native';
 import Header from '../components/Header';
 import MovieCarousel from '../components/MovieCarousel';
+import TopWatched from '../components/TopWatched';
 import {IMAGE} from '../constants/Image';
 import {TRENDING_MOVIES} from '../constants/Movies';
 
@@ -13,13 +14,25 @@ const HomeScreen = () => {
       resizeMode="cover">
       <Header />
 
-      <View style={styles.carouselSection}>
-        <MovieCarousel
-          heading="MOVIES"
-          data={TRENDING_MOVIES}
-          cardDimensions={{width: 220, height: 300}}
-          testID="trending-carousel"
-        />
+      <View style={styles.mainContent}>
+        <View style={styles.rightSection}>
+          <MovieCarousel
+            heading="MOVIES"
+            data={TRENDING_MOVIES}
+            cardDimensions={{width: 220, height: 300}}
+            testID="trending-carousel"
+          />
+
+          <MovieCarousel
+            heading="SERIES"
+            data={TRENDING_MOVIES}
+            cardDimensions={{width: 220, height: 300}}
+            testID="trending-carousel"
+          />
+        </View>
+        <View style={styles.leftSection}>
+          <TopWatched />
+        </View>
       </View>
     </ImageBackground>
   );
@@ -31,14 +44,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  mainContent: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+
+  leftSection: {
+    width: 400,
+    marginRight: 80,
+  },
+
+  rightSection: {
+    flex: 1,
+    marginTop: 35,
+  },
+
   text: {
     fontSize: 32,
     fontWeight: 'bold',
     color: '#FFFFFF',
     textAlign: 'center',
     letterSpacing: 1,
-  },
-  carouselSection: {
-    marginTop: 50,
   },
 });

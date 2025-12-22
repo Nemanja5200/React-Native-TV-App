@@ -62,7 +62,7 @@ const MovieCarousel = ({
     const expandedHeight = cardDimensions.height * 1.1;
     return StyleSheet.create({
       listView: {
-        height: expandedHeight + 60,
+        height: expandedHeight + 30,
       },
       container: {
         marginBottom: isLastItem ? 0 : 20,
@@ -80,7 +80,7 @@ const MovieCarousel = ({
       <View style={styles.carouselContainer}>
         {data.length > 0 && (
           <Carousel
-            testID={`carousel-${testID}`} // ✅ Fixed
+            testID={`carousel-${testID}`}
             containerStyle={computedStyles.listView}
             data={data}
             orientation="horizontal"
