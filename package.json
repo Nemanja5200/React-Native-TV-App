@@ -21,6 +21,7 @@
   "dependencies": {
     "@amazon-devices/kepler-ui-components": "^2.4.1",
     "@amazon-devices/react-native-kepler": "^2.0.0",
+    "@amazon-devices/shopify__flash-list": "^2.0.1758683737",
     "react": "18.2.0",
     "react-native": "0.72.0"
   },
