@@ -18,11 +18,11 @@ type Channel = {
 };
 
 const CHANNELS: Channel[] = [
-  {id: 1, name: 'Channel1', logo: require('../assets/ChannelLogo.png')},
-  {id: 2, name: 'Channel2', logo: require('../assets/ChannelLogo.png')},
-  {id: 3, name: 'Channel3', logo: require('../assets/ChannelLogo.png')},
-  {id: 4, name: 'Channel4', logo: require('../assets/ChannelLogo.png')},
-  {id: 5, name: 'Channel5', logo: require('../assets/ChannelLogo.png')},
+  {id: '1', name: 'Channel1', logo: require('../assets/ChannelLogo.png')},
+  {id: '2', name: 'Channel2', logo: require('../assets/ChannelLogo.png')},
+  {id: '3', name: 'Channel3', logo: require('../assets/ChannelLogo.png')},
+  {id: '4', name: 'Channel4', logo: require('../assets/ChannelLogo.png')},
+  {id: '5', name: 'Channel5', logo: require('../assets/ChannelLogo.png')},
 ];
 
 const TopWatched = () => {
