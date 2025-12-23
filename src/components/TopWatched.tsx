@@ -3,13 +3,13 @@ import {
   FlatList,
   Image,
   ImageSourcePropType,
-  Pressable,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
 import {FONTS} from '../constants/Fonts';
 import {COLORS} from '../styles/Colors';
+import FocusableElement from './FocusableElement';
 
 type Channel = {
   id: string;
@@ -27,12 +27,15 @@ const CHANNELS: Channel[] = [
 
 const TopWatched = () => {
   const renderChannel = ({item}: {item: Channel}) => (
-    <Pressable style={styles.channelCard}>
+    <FocusableElement
+      style={styles.channelCard}
+      focusedStyle={styles.channelCardFocused}
+      onPress={() => console.log('Selected:', item.name)}>
       <View style={styles.cardContent}>
         <Image source={item.logo} style={styles.logo} resizeMode="contain" />
         <Text style={styles.channelName}>{item.name}</Text>
       </View>
-    </Pressable>
+    </FocusableElement>
   );
 
   return (
@@ -54,7 +57,7 @@ export default React.memo(TopWatched);
 
 const styles = StyleSheet.create({
   container: {
-    width: 312,
+    width: 320,
     height: 873,
     borderRadius: 16,
     backgroundColor: COLORS.BLACK,
@@ -102,5 +105,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+
+  channelCardFocused: {
+    borderWidth: 5,
+    borderColor: COLORS.BORDER,
   },
 });

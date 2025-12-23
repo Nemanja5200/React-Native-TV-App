@@ -1,16 +1,23 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Image, StyleSheet, View} from 'react-native';
 
 import {IMAGES} from '../constants/Assets';
 import {NAV_ITEMS} from '../constants/Navigation';
+import {COLORS} from '../styles/Colors';
+import FocusableElement from './FocusableElement';
 import NavItem from './NavItem';
 const Header = () => {
+  const [isFocused, setIsFocused] = useState(false);
   return (
     <View style={styles.container}>
       <Image source={IMAGES.Logo} style={styles.logo} resizeMode="contain" />
       <View style={styles.navContainer}>
-        {NAV_ITEMS.map((item) => (
-          <NavItem key={item.id} title={item.title} />
+        {NAV_ITEMS.map((item, index) => (
+          <NavItem
+            key={item.id}
+            title={item.title}
+            hasTVPreferredFocus={index === 0}
+          />
         ))}
       </View>
     </View>
@@ -34,5 +41,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 32,
+  },
+
+  textFocus: {
+    color: COLORS.WHITE,
   },
 });
