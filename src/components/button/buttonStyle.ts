@@ -5,9 +5,9 @@ const buttonStyles = () =>
   StyleSheet.create({
     text: {
       fontSize: 24,
-      color: COLORS.LIGHT_GREY,
+      color: COLORS.WHITE,
       fontWeight: "500",
-      marginLeft: 6,
+      marginLeft: 16,
     },
     buttonIcon: {
       margin: 4,

@@ -1,21 +1,79 @@
 const data= {
-      "adult": false,
-      "backdrop_path": "/ufqytAlziHq5pljKByGJ8IKhtEZ.jpg",
-      "genre_ids": [
-        53,
-        80,
-        9648
-      ],
-      "id": 425274,
-      "original_language": "en",
-      "original_title": "Now You See Me: Now You Don't",
-      "overview": "The original Four Horsemen reunite with a new generation of illusionists to take on powerful diamond heiress Veronika Vanderberg, who leads a criminal empire built on money laundering and trafficking. The new and old magicians must overcome their differences to work together on their most ambitious heist yet.",
-      "popularity": 439.9602,
-      "poster_path": "/oD3Eey4e4Z259XLm3eD3WGcoJAh.jpg",
-      "release_date": "2025-11-12",
-      "title": "Now You See Me: Now You Don't",
-      "video": false,
-      "vote_average": 6.453,
-      "vote_count": 572
-    };
+  "adult": false,
+  "backdrop_path": "/iN41Ccw4DctL8npfmYg1j5Tr1eb.jpg",
+  "belongs_to_collection": {
+    "id": 87096,
+    "name": "Avatar Collection",
+    "poster_path": "/3C5brXxnBxfkeKWwA1Fh4xvy4wr.jpg",
+    "backdrop_path": "/6qkJLRCZp9Y3ovXti5tSuhH0DpO.jpg"
+  },
+  "budget": 400000000,
+  "genres": [
+    {
+      "id": 878,
+      "name": "Science Fiction"
+    },
+    {
+      "id": 12,
+      "name": "Adventure"
+    },
+    {
+      "id": 14,
+      "name": "Fantasy"
+    }
+  ],
+  "homepage": "https://www.avatar.com/movies/avatar-fire-and-ash",
+  "id": 83533,
+  "imdb_id": "tt1757678",
+  "origin_country": [
+    "US"
+  ],
+  "original_language": "en",
+  "original_title": "Avatar: Fire and Ash",
+  "overview": "In the wake of the devastating war against the RDA and the loss of their eldest son, Jake Sully and Neytiri face a new threat on Pandora: the Ash People, a violent and power-hungry Na'vi tribe led by the ruthless Varang. Jake's family must fight for their survival and the future of Pandora in a conflict that pushes them to their emotional and physical limits.",
+  "popularity": 531.1051,
+  "poster_path": "/gDVgC9jd917NdAcqBdRRDUYi4Tq.jpg",
+  "production_companies": [
+    {
+      "id": 127928,
+      "logo_path": "/h0rjX5vjW5r8yEnUBStFarjcLT4.png",
+      "name": "20th Century Studios",
+      "origin_country": "US"
+    },
+    {
+      "id": 574,
+      "logo_path": "/8wdmrfGcDx3TJxYiiDksLzAW4pB.png",
+      "name": "Lightstorm Entertainment",
+      "origin_country": "US"
+    },
+    {
+      "id": 22213,
+      "logo_path": "/qx9K6bFWJupwde0xQDwOvXkOaL8.png",
+      "name": "TSG Entertainment",
+      "origin_country": "US"
+    }
+  ],
+  "production_countries": [
+    {
+      "iso_3166_1": "US",
+      "name": "United States of America"
+    }
+  ],
+  "release_date": "2025-12-17",
+  "revenue": 347000000,
+  "runtime": 198,
+  "spoken_languages": [
+    {
+      "english_name": "English",
+      "iso_639_1": "en",
+      "name": "English"
+    }
+  ],
+  "status": "Released",
+  "tagline": "The world of Pandora will change forever.",
+  "title": "Avatar: Fire and Ash",
+  "video": false,
+  "vote_average": 7.3,
+  "vote_count": 489
+}
     export default  data

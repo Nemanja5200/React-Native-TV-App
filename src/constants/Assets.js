@@ -3,5 +3,6 @@ export const IMAGES = {
 };
 
 export const ICONS_IMAGES={
-  BACK_IMAGE: require('../assets/images/icons/back.png')
+  BACK_IMAGE: require('../assets/images/icons/back.png'),
+    PLAY_IMAGE: require('../assets/images/icons/play.png')
 }

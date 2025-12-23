@@ -18,15 +18,17 @@
     "build": "npm-run-all build:release",
     "release": "npm-run-all lint test build:app",
     "copy-fonts": "cp node_modules/@amazon-devices/react-native-vector-icons/Fonts/*.ttf src/assets/fonts/"
-
   },
   "dependencies": {
     "@amazon-devices/kepler-ui-components": "^2.4.1",
     "@amazon-devices/react-native-kepler": "^2.0.0",
     "@amazon-devices/react-native-vector-icons": "^2.0.1758683737",
     "@amazon-devices/shopify__flash-list": "^2.0.1758683737",
+    "expo-font": "^14.0.10",
     "react": "18.2.0",
-    "react-native": "0.72.0"
+    "react-native": "0.72.0",
+    "react-native-config": "^1.6.1",
+    "react-native-dotenv": "^3.4.11"
   },
   "devDependencies": {
     "@amazon-devices/kepler-cli-platform": "^0",
