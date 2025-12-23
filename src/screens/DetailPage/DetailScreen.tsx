@@ -20,7 +20,7 @@ const DetailPage = () => {
       <Text style={[detailSyle.textBig, detailSyle.overview]} numberOfLines={7} ellipsizeMode="tail">
         {data.overview}
       </Text>
-      <ButtonIcon onClick={() => { }} icon={ICONS_IMAGES.PLAY_IMAGE} width={286} height={78} size={15} radius={300} color={COLORS.LIGHT_BLACK} text="WATCH NOW" />
+      <ButtonIcon hasTVPreferredFocus={true} onClick={() => { }} icon={ICONS_IMAGES.PLAY_IMAGE} width={286} height={78} size={15} radius={300} color={COLORS.LIGHT_BLACK} text="WATCH NOW" />
     </View>
   );
   const Header = (

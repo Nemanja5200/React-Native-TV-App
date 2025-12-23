@@ -9,4 +9,5 @@ export interface ButtonType {
   width: number;
   height?: number;
   radius?: number;
+  hasTVPreferredFocus?: boolean;
 }
