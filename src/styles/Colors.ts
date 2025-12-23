@@ -3,5 +3,8 @@ export const COLORS = {
   LIGHT_GREY: '#FFFFFF99',
   DARK: '#1a1a1a',
   BLACK: '#000000',
+  LIGHT_BLACK: "#2F2F2F",
+  TRANSPARENT_BLACK: '#292424D4',
+  WHITE: '#FFF',
   BORDER: '#E71C25',
 };

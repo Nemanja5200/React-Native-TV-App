@@ -11,3 +11,5 @@ node_modules
 CMakeUserPresets.json
 npm-debug.log
 build
+.env
+env.d.ts

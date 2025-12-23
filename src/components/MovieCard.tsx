@@ -1,7 +1,7 @@
-import React, {memo, useState} from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
-import {COLORS} from '../styles/Colors';
-import {Movie} from '../types/Movie';
+import React, { memo, useState } from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { COLORS } from '../styles/Colors';
+import { Movie } from '../types/Movie';
 import FocusableElement from './FocusableElement';
 
 interface MovieCardProps {
@@ -10,7 +10,7 @@ interface MovieCardProps {
   height: number;
 }
 
-const MovieCard = ({data, width, height}: MovieCardProps) => {
+const MovieCard = ({ data, width, height }: MovieCardProps) => {
   const [isFocused, setIsFocused] = useState(false);
 
   return (

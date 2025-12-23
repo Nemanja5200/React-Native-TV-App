@@ -1,3 +1,4 @@
+import DetailScreen from './screens/DetailPage/DetailScreen';
 import HomeScreen from './screens/HomeScreen';
 import {ThemeProvider} from '@amazon-devices/kepler-ui-components';
 
