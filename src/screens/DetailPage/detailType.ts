@@ -1,0 +1,21 @@
+const data= {
+      "adult": false,
+      "backdrop_path": "/ufqytAlziHq5pljKByGJ8IKhtEZ.jpg",
+      "genre_ids": [
+        53,
+        80,
+        9648
+      ],
+      "id": 425274,
+      "original_language": "en",
+      "original_title": "Now You See Me: Now You Don't",
+      "overview": "The original Four Horsemen reunite with a new generation of illusionists to take on powerful diamond heiress Veronika Vanderberg, who leads a criminal empire built on money laundering and trafficking. The new and old magicians must overcome their differences to work together on their most ambitious heist yet.",
+      "popularity": 439.9602,
+      "poster_path": "/oD3Eey4e4Z259XLm3eD3WGcoJAh.jpg",
+      "release_date": "2025-11-12",
+      "title": "Now You See Me: Now You Don't",
+      "video": false,
+      "vote_average": 6.453,
+      "vote_count": 572
+    };
+    export default  data
