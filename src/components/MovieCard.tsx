@@ -1,7 +1,10 @@
-import React, { memo, useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { COLORS } from '../styles/Colors';
-import { Movie } from '../types/Movie';
+import React, {memo, useState} from 'react';
+import {Image, StyleSheet, Text, View} from 'react-native';
+import {useNavigation} from '@amazon-devices/react-navigation__native';
+import {StackNavigationProp} from '@amazon-devices/react-navigation__stack';
+import {AppStackParamList, Screens} from '../navigation/types';
+import {COLORS} from '../styles/Colors';
+import {Movie} from '../types/Movie';
 import FocusableElement from './FocusableElement';
 
 interface MovieCardProps {
@@ -10,15 +13,27 @@ interface MovieCardProps {
   height: number;
 }
 
-const MovieCard = ({ data, width, height }: MovieCardProps) => {
+type NavigationProp = StackNavigationProp<AppStackParamList>;
+
+const MovieCard = ({data, width, height}: MovieCardProps) => {
   const [isFocused, setIsFocused] = useState(false);
+  const navigation = useNavigation<NavigationProp>();
+
+  const handlePress = () => {
+    navigation.navigate(Screens.DETAILS_SCREEN, {
+      id: data.id,
+      title: data.title,
+    });
+  };
 
   return (
     <FocusableElement
       style={styles.card}
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
-      onPress={() => console.log('Selected:', data.title)}>
+      onPress={handlePress}>
+      {' '}
+      {/* Missing > */}
       <View style={styles.card}>
         <Image
           source={data.image}
