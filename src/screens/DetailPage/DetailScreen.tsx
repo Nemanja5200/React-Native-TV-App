@@ -1,20 +1,17 @@
 import React from "react"
 import { Image, ImageBackground, Text, View } from "react-native"
-import data from "./detailType"
 import style from "./style"
 import ButtonIcon from "../../components/button/ButtonIcon"
-import { ICONS_IMAGES } from "../../constants/Assets"
+import { ICONS_IMAGES, IMAGES } from "../../constants/Assets"
 import { COLORS } from "../../styles/Colors"
-import { EXPO_PUBLIC_URL_API } from '@env'
+import { useDetails } from "../../hooks/useDetails"
+
 const DetailPage = () => {
-
   const detailSyle = style();
-
-  const imageUrl = `${EXPO_PUBLIC_URL_API}${data.poster_path}`;
-  const genres = data.genres.map((e) => e.name).join(", ");
-  const releaseDate = data.release_date.split("-")[0];
-  const country = Array.isArray(data.origin_country) ? data.origin_country.join(", ") : data.origin_country;
-
+    const { data } = useDetails("425274")
+  const genres = data.genres.map((e) => e).join(", ");
+  const releaseDate = data.releaseDate.split("-")[0];
+  
   const Description = (
     <View style={detailSyle.inColumn}>
       <Text style={[detailSyle.textBig, detailSyle.overview]} numberOfLines={7} ellipsizeMode="tail">
@@ -29,17 +26,17 @@ const DetailPage = () => {
       <Text style={detailSyle.textSmall}>{genres}</Text>
       <Text style={detailSyle.textSmall}>{data.runtime} min</Text>
       <View style={[detailSyle.inRow,]}>
-        <Text style={detailSyle.textSmall}>{country} - {releaseDate} - {data.adult ? "G" : "PG"} - IMDb: {data.vote_average.toFixed(2)} </Text>
+        <Text style={detailSyle.textSmall}>{data.language.toUpperCase()} - {releaseDate} - {data.status ? "G" : "PG"} - IMDb: {data.voteAverage.toFixed(2)} </Text>
       </View>
     </View>
   );
   return (
-    <ImageBackground source={{ uri: imageUrl }} style={detailSyle.page} resizeMode="cover">
+    <ImageBackground source={data.posterUrl?{ uri: data.posterUrl} :IMAGES.Logo } style={detailSyle.page} resizeMode="cover">
       <View style={detailSyle.overlay}>
         <View style={[detailSyle.inColumn, detailSyle.body]}>
           {Header}
           <View style={[detailSyle.inRow, { marginTop: 20 }]}>
-            <Image source={{ uri: imageUrl }} style={detailSyle.vebImage}></Image>
+            <Image source={data.posterUrl?{ uri: data.posterUrl} :IMAGES.Logo} style={detailSyle.vebImage}></Image>
             <View style={[detailSyle.inColumn, { paddingLeft: 70 }]}>
               <Text style={[detailSyle.textBig, detailSyle.title]}>{data.title}</Text>
               {Description}

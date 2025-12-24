@@ -4,13 +4,19 @@
  * PROPRIETARY/CONFIDENTIAL.  USE IS SUBJECT TO LICENSE TERMS.
  */
 module.exports = {
-  presets: ['module:metro-react-native-babel-preset'],
+  presets: [
+    'module:metro-react-native-babel-preset',
+    '@babel/preset-env',
+    '@babel/preset-typescript',
+  ],
   plugins: [
     ['module:react-native-dotenv', {
       moduleName: '@env',
       path: '.env',
       safe: false,
       allowUndefined: true
-    }]
+    }],
+    ['@babel/plugin-proposal-private-methods', { loose: true }]
   ]
 };
+

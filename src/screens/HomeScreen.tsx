@@ -1,10 +1,10 @@
 import React from 'react';
-import {ImageBackground, StyleSheet, View} from 'react-native';
+import { ImageBackground, StyleSheet, View } from 'react-native';
 import Header from '../components/Header';
 import MovieCarousel from '../components/MovieCarousel';
 import TopWatched from '../components/TopWatched';
-import {IMAGE} from '../constants/Image';
-import {TRENDING_MOVIES} from '../constants/Movies';
+import { IMAGE } from '../constants/Image';
+import { TRENDING_MOVIES } from '../constants/Movies';
 
 const HomeScreen = () => {
   return (
@@ -19,14 +19,14 @@ const HomeScreen = () => {
           <MovieCarousel
             heading="MOVIES"
             data={TRENDING_MOVIES}
-            cardDimensions={{width: 220, height: 300}}
+            cardDimensions={{ width: 220, height: 300 }}
             testID="trending-carousel"
           />
 
           <MovieCarousel
             heading="SERIES"
             data={TRENDING_MOVIES}
-            cardDimensions={{width: 220, height: 300}}
+            cardDimensions={{ width: 220, height: 300 }}
             testID="trending-carousel"
           />
         </View>
