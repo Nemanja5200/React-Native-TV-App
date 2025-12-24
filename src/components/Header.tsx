@@ -1,30 +1,51 @@
-import React, {useState} from 'react';
+import React, {useRef} from 'react';
 import {Image, StyleSheet, View} from 'react-native';
-
 import {IMAGES} from '../constants/Assets';
 import {NAV_ITEMS} from '../constants/Navigation';
-import {COLORS} from '../styles/Colors';
-import FocusableElement from './FocusableElement';
 import NavItem from './NavItem';
+import {useNodeHandle} from '../hooks/useNodeHandle';
+
 const Header = () => {
-  const [isFocused, setIsFocused] = useState(false);
+  const navRef0 = useRef(null);
+  const navRef1 = useRef(null);
+
+  const navRefs = [navRef0, navRef1];
+
+  const navHandle0 = useNodeHandle(navRef0);
+  const navHandle1 = useNodeHandle(navRef1);
+
+  const navHandles = [navHandle0, navHandle1];
+
   return (
     <View style={styles.container}>
       <Image source={IMAGES.Logo} style={styles.logo} resizeMode="contain" />
       <View style={styles.navContainer}>
-        {NAV_ITEMS.map((item, index) => (
-          <NavItem
-            key={item.id}
-            title={item.title}
-            hasTVPreferredFocus={index === 0}
-          />
-        ))}
+        {NAV_ITEMS.map((item, index) => {
+          const isFirstItem = index === 0;
+          const isLastItem = index === NAV_ITEMS.length - 1;
+
+          return (
+            <NavItem
+              key={item.id}
+              ref={navRefs[index]}
+              title={item.title}
+              hasTVPreferredFocus={isFirstItem}
+              nextFocusRight={
+                isLastItem ? navHandles[index] || undefined : undefined
+              }
+              nextFocusLeft={
+                isFirstItem ? navHandles[index] || undefined : undefined
+              }
+            />
+          );
+        })}
       </View>
     </View>
   );
 };
 
 export default React.memo(Header);
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -41,9 +62,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 32,
-  },
-
-  textFocus: {
-    color: COLORS.WHITE,
   },
 });

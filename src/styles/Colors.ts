@@ -7,4 +7,5 @@ export const COLORS = {
   TRANSPARENT_BLACK: '#292424D4',
   WHITE: '#FFF',
   BORDER: '#E71C25',
+  WHITE: 'white',
 };
