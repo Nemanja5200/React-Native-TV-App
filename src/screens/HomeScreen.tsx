@@ -1,5 +1,5 @@
 import {useFocusEffect} from '@amazon-devices/react-navigation__native';
-import React, {useCallback, useRef} from 'react';
+import React from 'react';
 import {ImageBackground, StyleSheet, View} from 'react-native';
 import Layout from '../components/Layout';
 import MovieCarousel from '../components/MovieCarousel';
@@ -8,26 +8,12 @@ import {IMAGE} from '../constants/Image';
 import {TRENDING_MOVIES} from '../constants/Movies';
 
 const HomeScreen = () => {
-  const firstFocusableRef = useRef(null);
-
-  useFocusEffect(
-    useCallback(() => {
-      const timer = setTimeout(() => {
-        if (firstFocusableRef.current) {
-          firstFocusableRef.current.setNativeProps({hasTVPreferredFocus: true});
-        }
-      }, 100);
-
-      return () => clearTimeout(timer);
-    }, []),
-  );
-
   return (
     <ImageBackground
       source={IMAGE.BACKGROUND}
       style={styles.container}
       resizeMode="cover">
-      <Layout>
+      <Layout showHeader={true}>
         <View style={styles.mainContent}>
           <View style={styles.rightSection}>
             <MovieCarousel

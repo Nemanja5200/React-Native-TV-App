@@ -1,5 +1,12 @@
-import React from 'react';
-import {Image, ImageBackground, Text, View} from 'react-native';
+import React, {useCallback, useEffect} from 'react';
+import {
+  Image,
+  ImageBackground,
+  Text,
+  View,
+  Platform,
+  BackHandler,
+} from 'react-native';
 import data from './detailType';
 import style from './style';
 import ButtonIcon from '../../components/button/ButtonIcon';
@@ -8,6 +15,8 @@ import {COLORS} from '../../styles/Colors';
 import {EXPO_PUBLIC_URL_API} from '@env';
 import Layout from '../../components/Layout';
 import {useNavigation} from '@amazon-devices/react-navigation__native';
+import {AppStackParamList, Screens} from '../../navigation/types';
+import {StackNavigationProp} from '@amazon-devices/react-navigation__stack';
 const DetailPage = () => {
   const detailSyle = style();
 
@@ -18,11 +27,23 @@ const DetailPage = () => {
     ? data.origin_country.join(', ')
     : data.origin_country;
 
-  const navigation = useNavigation();
+  type DetailScreenNavigationProp = StackNavigationProp<AppStackParamList>;
 
-  const handleBack = () => {
-    navigation.goBack();
-  };
+  const navigation = useNavigation<DetailScreenNavigationProp>();
+  const navigateBack = useCallback(() => {
+    navigation.navigate(Screens.HOME_SCREEN);
+    return true;
+  }, [navigation]);
+
+  useEffect(() => {
+    if (Platform.isTV) {
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        navigateBack,
+      );
+      return () => backHandler.remove();
+    }
+  }, [navigateBack]);
 
   const Description = (
     <View style={detailSyle.inColumn}>
@@ -48,7 +69,7 @@ const DetailPage = () => {
   const Metadata = (
     <View>
       <ButtonIcon
-        onClick={handleBack}
+        onClick={navigateBack}
         icon={ICONS_IMAGES.BACK_IMAGE}
         width={112}
         height={64}

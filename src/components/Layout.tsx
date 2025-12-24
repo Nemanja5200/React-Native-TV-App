@@ -5,14 +5,9 @@ import Header from './Header';
 type Props = {
   children: React.ReactNode;
   showHeader?: boolean;
-  focusHeaderOnMount?: boolean;
 };
 
-const Layout = ({
-  children,
-  showHeader = true,
-  focusHeaderOnMount = false,
-}: Props) => {
+const Layout = ({children, showHeader = true, headerRef}: Props) => {
   return (
     <View style={styles.container}>
       {showHeader && <Header />}
