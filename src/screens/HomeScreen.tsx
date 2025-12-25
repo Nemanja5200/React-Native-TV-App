@@ -1,6 +1,7 @@
+import {useFocusEffect} from '@amazon-devices/react-navigation__native';
 import React from 'react';
 import {ImageBackground, StyleSheet, View} from 'react-native';
-import Header from '../components/Header';
+import Layout from '../components/Layout';
 import MovieCarousel from '../components/MovieCarousel';
 import TopWatched from '../components/TopWatched';
 import {IMAGE} from '../constants/Image';
@@ -12,28 +13,28 @@ const HomeScreen = () => {
       source={IMAGE.BACKGROUND}
       style={styles.container}
       resizeMode="cover">
-      <Header />
+      <Layout showHeader={true}>
+        <View style={styles.mainContent}>
+          <View style={styles.rightSection}>
+            <MovieCarousel
+              heading="MOVIES"
+              data={TRENDING_MOVIES}
+              cardDimensions={{width: 220, height: 300}}
+              testID="trending-carousel"
+            />
 
-      <View style={styles.mainContent}>
-        <View style={styles.rightSection}>
-          <MovieCarousel
-            heading="MOVIES"
-            data={TRENDING_MOVIES}
-            cardDimensions={{width: 220, height: 300}}
-            testID="trending-carousel"
-          />
-
-          <MovieCarousel
-            heading="SERIES"
-            data={TRENDING_MOVIES}
-            cardDimensions={{width: 220, height: 300}}
-            testID="trending-carousel"
-          />
+            <MovieCarousel
+              heading="SERIES"
+              data={TRENDING_MOVIES}
+              cardDimensions={{width: 220, height: 300}}
+              testID="trending-carousel"
+            />
+          </View>
+          <View style={styles.leftSection}>
+            <TopWatched />
+          </View>
         </View>
-        <View style={styles.leftSection}>
-          <TopWatched />
-        </View>
-      </View>
+      </Layout>
     </ImageBackground>
   );
 };
