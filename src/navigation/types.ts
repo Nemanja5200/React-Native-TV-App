@@ -8,7 +8,7 @@ export enum Screens {
 
 export type AppStackParamList = {
   [Screens.HOME_SCREEN]: undefined;
-  [Screens.DETAILS_SCREEN]: {id: string; title: string};
+  [Screens.DETAILS_SCREEN]: {id: string; title: string; focusId: string};
   [Screens.PLAYER_SCREEN]: {videoUrl: string};
   [Screens.SEARCH_SCREEN]: undefined;
   [Screens.SETTINGS_SCREEN]: undefined;

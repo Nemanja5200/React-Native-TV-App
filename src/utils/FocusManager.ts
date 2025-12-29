@@ -1,24 +1,40 @@
-type FocusCallback = () => void;
+/**
+ * Simple focus restoration manager that avoids passing functions as navigation params
+ */
+class FocusManager {
+  private focusCallbacks: Map<string, () => void> = new Map();
 
-class FocusManagerClass {
-  private focusCallbacks: Map<string, FocusCallback> = new Map();
-
-  registerFocusCallback(key: string, callback: FocusCallback) {
-    this.focusCallbacks.set(key, callback);
+  /**
+   * Register a focus restoration callback for a specific ID
+   */
+  registerFocusCallback(id: string, callback: () => void) {
+    this.focusCallbacks.set(id, callback);
   }
 
-  restoreFocus(key: string) {
-    const callback = this.focusCallbacks.get(key);
+  /**
+   * Execute and remove a focus restoration callback
+   */
+  restoreFocus(id: string) {
+    const callback = this.focusCallbacks.get(id);
     if (callback) {
-      setTimeout(() => {
-        callback();
-      }, 100);
+      callback();
+      this.focusCallbacks.delete(id);
     }
   }
 
-  removeFocusCallback(key: string) {
-    this.focusCallbacks.delete(key);
+  /**
+   * Remove a focus restoration callback without executing it
+   */
+  unregisterFocusCallback(id: string) {
+    this.focusCallbacks.delete(id);
+  }
+
+  /**
+   * Clear all focus callbacks
+   */
+  clearAll() {
+    this.focusCallbacks.clear();
   }
 }
 
-export const focusManager = new FocusManagerClass();
+export const focusManager = new FocusManager();
