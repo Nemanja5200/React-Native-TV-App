@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import {
   Image,
   ImageBackground,
@@ -14,9 +14,13 @@ import {ICONS_IMAGES} from '../../constants/Assets';
 import {COLORS} from '../../styles/Colors';
 import {EXPO_PUBLIC_URL_API} from '@env';
 import Layout from '../../components/Layout';
-import {useNavigation} from '@amazon-devices/react-navigation__native';
+import {
+  useNavigation,
+  useRoute,
+} from '@amazon-devices/react-navigation__native';
 import {AppStackParamList, Screens} from '../../navigation/types';
 import {StackNavigationProp} from '@amazon-devices/react-navigation__stack';
+import {focusManager} from '../../utils/FocusManager';
 const DetailPage = () => {
   const detailSyle = style();
 
@@ -30,10 +34,17 @@ const DetailPage = () => {
   type DetailScreenNavigationProp = StackNavigationProp<AppStackParamList>;
 
   const navigation = useNavigation<DetailScreenNavigationProp>();
+  const route = useRoute<any>();
   const navigateBack = useCallback(() => {
+    const focusId = route.params?.focusId;
+
     navigation.navigate(Screens.HOME_SCREEN);
+
+    if (focusId) {
+      focusManager.restoreFocus(`tile_${focusId}`);
+    }
     return true;
-  }, [navigation]);
+  }, [navigation, route.params?.focusId]);
 
   useEffect(() => {
     if (Platform.isTV) {
