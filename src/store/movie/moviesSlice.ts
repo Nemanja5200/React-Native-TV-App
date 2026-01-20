@@ -1,10 +1,17 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import {MediaType, MEDIA_TYPE} from '../../constants/Media';
 import {tmdbService} from '../../service/tmbdService';
-import type {Movie, TVShow} from '../../types/TMBDTypes';
+import type {
+  Details,
+  Movie,
+  SeriesDetails,
+  TVShow,
+} from '../../types/TMBDTypes';
 
 interface MoviesState {
   nowPlaying: Movie[];
   popularTVShows: TVShow[];
+  details: Details | SeriesDetails | null;
   isLoading: boolean;
   error: string | null;
 }
@@ -12,6 +19,7 @@ interface MoviesState {
 const initialState: MoviesState = {
   nowPlaying: [],
   popularTVShows: [],
+  details: null,
   isLoading: false,
   error: null,
 };
@@ -29,6 +37,17 @@ export const fetchPopularTVShows = createAsyncThunk(
   async () => {
     const response = await tmdbService.getPopularSeries();
     return response.results;
+  },
+);
+
+export const fetchDetails = createAsyncThunk(
+  'details/fetchDetails',
+  async ({id, type}: {id: number; type: MediaType}) => {
+    const response =
+      type === MEDIA_TYPE.SERIES
+        ? await tmdbService.getSeriesDetails(id)
+        : await tmdbService.getMovieDetails(id);
+    return response;
   },
 );
 const moviesSlice = createSlice({
@@ -63,6 +82,19 @@ const moviesSlice = createSlice({
       .addCase(fetchPopularTVShows.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message || 'Failed to fetch popular series';
+      })
+
+      .addCase(fetchDetails.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchDetails.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.details = action.payload;
+      })
+      .addCase(fetchDetails.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message || 'Failt to fetch details';
       });
   },
 });

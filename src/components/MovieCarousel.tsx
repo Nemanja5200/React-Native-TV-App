@@ -8,14 +8,16 @@ import {
 } from '@amazon-devices/kepler-ui-components';
 import {COLORS} from '../styles/Colors';
 import MovieCard from './MovieCard';
-import {Movie} from '../types/TMBDTypes';
+import {Movie, TVShow} from '../types/TMBDTypes';
+import {MediaType, MEDIA_TYPE} from '../constants/Media';
 
 interface MovieCarouselProps {
   heading: string;
-  data: Movie[];
+  data: Movie[] | TVShow[];
   cardDimensions?: {width: number; height: number};
   testID?: string;
   isLastItem?: boolean;
+  type: MediaType;
 }
 
 const SPACING = {
@@ -29,6 +31,7 @@ const MovieCarousel = ({
   cardDimensions = {width: 250, height: 300},
   testID,
   isLastItem = false,
+  type,
 }: MovieCarouselProps) => {
   const ItemView = useCallback(
     ({item}: CarouselRenderInfo<Movie>) => {
@@ -37,6 +40,7 @@ const MovieCarousel = ({
           data={item}
           width={cardDimensions.width}
           height={cardDimensions.height}
+          type={type}
         />
       );
     },

@@ -1,3 +1,5 @@
+import {MediaType} from '../constants/Media';
+
 export enum Screens {
   HOME_SCREEN = 'HomeScreen',
   DETAILS_SCREEN = 'DetailsScreen',
@@ -8,7 +10,12 @@ export enum Screens {
 
 export type AppStackParamList = {
   [Screens.HOME_SCREEN]: undefined;
-  [Screens.DETAILS_SCREEN]: {id: string; title: string; focusId: string};
+  [Screens.DETAILS_SCREEN]: {
+    id: string;
+    title: string;
+    focusId: string;
+    type: MediaType;
+  };
   [Screens.PLAYER_SCREEN]: {videoUrl: string};
   [Screens.SEARCH_SCREEN]: undefined;
   [Screens.SETTINGS_SCREEN]: undefined;

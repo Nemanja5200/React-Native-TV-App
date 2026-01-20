@@ -1,21 +1,22 @@
 import React, {memo, useCallback, useRef, useState} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {useNavigation} from '@amazon-devices/react-navigation__native';
-import {AppStackParamList, Screens} from '../navigation/types';
+import {Screens} from '../navigation/types';
 import {COLORS} from '../styles/Colors';
 import FocusableElement from './FocusableElement';
 import {focusManager} from '../utils/FocusManager';
-import {TMBD_ROUTE} from '../constants/TMBD_ROUTS';
 import {EXPO_PUBLIC_URL_API} from '@env';
-import {Movie} from '../types/TMBDTypes';
+import {Movie, TVShow} from '../types/TMBDTypes';
+import {MediaType} from '../constants/Media';
 
 interface MovieCardProps {
-  data: Movie;
+  data: Movie | TVShow;
+  type: MediaType;
   width: number;
   height: number;
 }
 
-const MovieCard = ({data, width, height}: MovieCardProps) => {
+const MovieCard = ({data, width, height, type}: MovieCardProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const navigation = useNavigation<any>();
   const cardRef = useRef<any>(null);
@@ -32,8 +33,9 @@ const MovieCard = ({data, width, height}: MovieCardProps) => {
       id: data.id,
       title: data.title,
       focusId: data.id,
+      type: type,
     });
-  }, [data, navigation]);
+  }, [data, navigation, type]);
 
   return (
     <FocusableElement

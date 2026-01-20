@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   Image,
   ImageBackground,
@@ -6,8 +6,8 @@ import {
   View,
   Platform,
   BackHandler,
+  ActivityIndicator,
 } from 'react-native';
-import data from './detailType';
 import style from './style';
 import ButtonIcon from '../../components/button/ButtonIcon';
 import {ICONS_IMAGES} from '../../constants/Assets';
@@ -17,34 +17,43 @@ import Layout from '../../components/Layout';
 import {
   useNavigation,
   useRoute,
+  RouteProp,
 } from '@amazon-devices/react-navigation__native';
 import {AppStackParamList, Screens} from '../../navigation/types';
 import {StackNavigationProp} from '@amazon-devices/react-navigation__stack';
 import {focusManager} from '../../utils/FocusManager';
+import {useAppDispatch, useAppSelector} from '../../store/hooks/hooks';
+import {fetchDetails} from '../../store/movie/moviesSlice';
+import {MEDIA_TYPE} from '../../constants/Media';
+
+type DetailScreenNavigationProp = StackNavigationProp<AppStackParamList>;
+type DetailScreenRouteProp = RouteProp<
+  AppStackParamList,
+  Screens.DETAILS_SCREEN
+>;
+
 const DetailPage = () => {
-  const detailSyle = style();
-
-  const imageUrl = `${EXPO_PUBLIC_URL_API}${data.poster_path}`;
-  const genres = data.genres.map((e) => e.name).join(', ');
-  const releaseDate = data.release_date.split('-')[0];
-  const country = Array.isArray(data.origin_country)
-    ? data.origin_country.join(', ')
-    : data.origin_country;
-
-  type DetailScreenNavigationProp = StackNavigationProp<AppStackParamList>;
-
+  const detailStyle = style();
+  const dispatch = useAppDispatch();
   const navigation = useNavigation<DetailScreenNavigationProp>();
-  const route = useRoute<any>();
+  const route = useRoute<DetailScreenRouteProp>();
+
+  const {id, type, focusId} = route.params;
+  const {details, isLoading, error} = useAppSelector((state) => state.movies);
+
+  const isTVShow = type === MEDIA_TYPE.SERIES;
+
+  useEffect(() => {
+    dispatch(fetchDetails({id: Number(id), type}));
+  }, [dispatch, id, type]);
+
   const navigateBack = useCallback(() => {
-    const focusId = route.params?.focusId;
-
     navigation.navigate(Screens.HOME_SCREEN);
-
     if (focusId) {
       focusManager.restoreFocus(`tile_${focusId}`);
     }
     return true;
-  }, [navigation, route.params?.focusId]);
+  }, [navigation, focusId]);
 
   useEffect(() => {
     if (Platform.isTV) {
@@ -56,13 +65,47 @@ const DetailPage = () => {
     }
   }, [navigateBack]);
 
+  // Loading state
+  // if (isLoading) {
+  //   return (
+  //     <View
+  //       style={[
+  //         detailStyle.page,
+  //         {justifyContent: 'center', alignItems: 'center'},
+  //       ]}>
+  //       <ActivityIndicator size="large" color={COLORS.WHITE} />
+  //     </View>
+  //   );
+  // }
+
+  // Error state
+  if (error) {
+    return (
+      <View
+        style={[
+          detailStyle.page,
+          {justifyContent: 'center', alignItems: 'center'},
+        ]}>
+        <Text style={{color: 'red'}}>{error}</Text>
+      </View>
+    );
+  }
+
+  // No data
+  if (!details) {
+    return null;
+  }
+
+  const imageUrl = `${EXPO_PUBLIC_URL_API}${details.heroPoster}`;
+  const posterUrl = `${EXPO_PUBLIC_URL_API}${details.poster}`;
+
   const Description = (
-    <View style={detailSyle.inColumn}>
+    <View style={detailStyle.inColumn}>
       <Text
-        style={[detailSyle.textBig, detailSyle.overview]}
+        style={[detailStyle.textBig, detailStyle.overview]}
         numberOfLines={7}
         ellipsizeMode="tail">
-        {data.overview}
+        {details.overview}
       </Text>
       <ButtonIcon
         hasTVPreferredFocus={true}
@@ -77,6 +120,7 @@ const DetailPage = () => {
       />
     </View>
   );
+
   const Metadata = (
     <View>
       <ButtonIcon
@@ -88,32 +132,33 @@ const DetailPage = () => {
         radius={300}
         color={COLORS.LIGHT_BLACK}
       />
-      <Text style={detailSyle.textSmall}>{genres}</Text>
-      <Text style={detailSyle.textSmall}>{data.runtime} min</Text>
-      <View style={[detailSyle.inRow]}>
-        <Text style={detailSyle.textSmall}>
-          {country} - {releaseDate} - {data.adult ? 'G' : 'PG'} - IMDb:{' '}
-          {data.vote_average.toFixed(2)}{' '}
+      <Text style={detailStyle.textSmall}>{details.genre}</Text>
+      <Text style={detailStyle.textSmall}>
+        {details.duration} {isTVShow ? 'Seasons' : 'min'}
+      </Text>
+      <View style={detailStyle.inRow}>
+        <Text style={detailStyle.textSmall}>
+          {details.country} - {details.release_date?.split('-')[0]} - PG - IMDb:{' '}
+          {details.rating?.toFixed(2)}
         </Text>
       </View>
     </View>
   );
+
   return (
     <ImageBackground
       source={{uri: imageUrl}}
-      style={detailSyle.page}
+      style={detailStyle.page}
       resizeMode="cover">
       <Layout showHeader={false}>
-        <View style={detailSyle.overlay}>
-          <View style={[detailSyle.inColumn, detailSyle.body]}>
+        <View style={detailStyle.overlay}>
+          <View style={[detailStyle.inColumn, detailStyle.body]}>
             {Metadata}
-            <View style={[detailSyle.inRow, {marginTop: 20}]}>
-              <Image
-                source={{uri: imageUrl}}
-                style={detailSyle.vebImage}></Image>
-              <View style={[detailSyle.inColumn, {paddingLeft: 70}]}>
-                <Text style={[detailSyle.textBig, detailSyle.title]}>
-                  {data.title}
+            <View style={[detailStyle.inRow, {marginTop: 20}]}>
+              <Image source={{uri: posterUrl}} style={detailStyle.vebImage} />
+              <View style={[detailStyle.inColumn, {paddingLeft: 70}]}>
+                <Text style={[detailStyle.textBig, detailStyle.title]}>
+                  {details.title}
                 </Text>
                 {Description}
               </View>
@@ -124,4 +169,5 @@ const DetailPage = () => {
     </ImageBackground>
   );
 };
+
 export default React.memo(DetailPage);

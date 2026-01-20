@@ -1,11 +1,10 @@
-import {useFocusEffect} from '@amazon-devices/react-navigation__native';
 import React, {useEffect} from 'react';
 import {ImageBackground, StyleSheet, View} from 'react-native';
 import Layout from '../components/Layout';
 import MovieCarousel from '../components/MovieCarousel';
 import TopWatched from '../components/TopWatched';
 import {IMAGE} from '../constants/Image';
-import {TRENDING_MOVIES} from '../constants/Movies';
+import {MEDIA_TYPE} from '../constants/Media';
 import {useAppDispatch, useAppSelector} from '../store/hooks/hooks';
 import {
   fetchNowPlayingMovies,
@@ -26,8 +25,6 @@ const HomeScreen = () => {
     fetchData();
   }, [dispatch]);
 
-  console.log(popularTVShows);
-
   return (
     <ImageBackground
       source={IMAGE.BACKGROUND}
@@ -41,6 +38,7 @@ const HomeScreen = () => {
               data={nowPlaying.slice(0, 5)}
               cardDimensions={{width: 220, height: 300}}
               testID="trending-carousel"
+              type={MEDIA_TYPE.MOVIE}
             />
 
             <MovieCarousel
@@ -48,6 +46,7 @@ const HomeScreen = () => {
               data={popularTVShows.slice(0, 5)}
               cardDimensions={{width: 220, height: 300}}
               testID="trending-carousel"
+              type={MEDIA_TYPE.SERIES}
             />
           </View>
           <View style={styles.leftSection}>
