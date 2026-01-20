@@ -1,13 +1,24 @@
 import {useFocusEffect} from '@amazon-devices/react-navigation__native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {ImageBackground, StyleSheet, View} from 'react-native';
 import Layout from '../components/Layout';
 import MovieCarousel from '../components/MovieCarousel';
 import TopWatched from '../components/TopWatched';
 import {IMAGE} from '../constants/Image';
 import {TRENDING_MOVIES} from '../constants/Movies';
+import {useAppDispatch, useAppSelector} from '../store/hooks/hooks';
+import {fetchNowPlayingMovies} from '../store/movie/moviesSlice';
 
 const HomeScreen = () => {
+  const dispatch = useAppDispatch();
+  const {nowPlaying} = useAppSelector((state) => state.movies);
+
+  useEffect(() => {
+    dispatch(fetchNowPlayingMovies());
+  }, [dispatch]);
+
+  console.log(nowPlaying);
+
   return (
     <ImageBackground
       source={IMAGE.BACKGROUND}
