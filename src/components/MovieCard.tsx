@@ -3,9 +3,11 @@ import {Image, StyleSheet, Text, View} from 'react-native';
 import {useNavigation} from '@amazon-devices/react-navigation__native';
 import {AppStackParamList, Screens} from '../navigation/types';
 import {COLORS} from '../styles/Colors';
-import {Movie} from '../types/Movie';
 import FocusableElement from './FocusableElement';
 import {focusManager} from '../utils/FocusManager';
+import {TMBD_ROUTE} from '../constants/TMBD_ROUTS';
+import {EXPO_PUBLIC_URL_API} from '@env';
+import {Movie} from '../types/TMBDTypes';
 
 interface MovieCardProps {
   data: Movie;
@@ -19,11 +21,10 @@ const MovieCard = ({data, width, height}: MovieCardProps) => {
   const cardRef = useRef<any>(null);
 
   const handlePress = useCallback(() => {
-    console.log(`tile_${data.id}`); // ✅ Added ( before backtick
+    console.log(`tile_${data.id}`);
 
     focusManager.registerFocusCallback(`tile_${data.id}`, () => {
-      // ✅ Added ( before backtick
-      console.log(`Restoring focus to tile_${data.id}`); // ✅ Added ( before backtick
+      console.log(`Restoring focus to tile_${data.id}`);
       cardRef.current?.requestTVFocus();
     });
 
@@ -43,7 +44,7 @@ const MovieCard = ({data, width, height}: MovieCardProps) => {
       onPress={handlePress}>
       <View style={styles.card}>
         <Image
-          source={data.image}
+          source={{uri: `${EXPO_PUBLIC_URL_API}${data.poster}`}}
           style={[
             {
               width: width,

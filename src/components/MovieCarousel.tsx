@@ -6,9 +6,9 @@ import {
   ItemInfo,
   Typography,
 } from '@amazon-devices/kepler-ui-components';
-import {Movie} from '../types/Movie';
 import {COLORS} from '../styles/Colors';
 import MovieCard from './MovieCard';
+import {Movie} from '../types/TMBDTypes';
 
 interface MovieCarouselProps {
   heading: string;

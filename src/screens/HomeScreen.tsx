@@ -7,17 +7,26 @@ import TopWatched from '../components/TopWatched';
 import {IMAGE} from '../constants/Image';
 import {TRENDING_MOVIES} from '../constants/Movies';
 import {useAppDispatch, useAppSelector} from '../store/hooks/hooks';
-import {fetchNowPlayingMovies} from '../store/movie/moviesSlice';
+import {
+  fetchNowPlayingMovies,
+  fetchPopularTVShows,
+} from '../store/movie/moviesSlice';
 
 const HomeScreen = () => {
   const dispatch = useAppDispatch();
-  const {nowPlaying} = useAppSelector((state) => state.movies);
+  const {nowPlaying, popularTVShows} = useAppSelector((state) => state.movies);
 
   useEffect(() => {
-    dispatch(fetchNowPlayingMovies());
+    const fetchData = async () => {
+      await Promise.all([
+        dispatch(fetchNowPlayingMovies()),
+        dispatch(fetchPopularTVShows()),
+      ]);
+    };
+    fetchData();
   }, [dispatch]);
 
-  console.log(nowPlaying);
+  console.log(popularTVShows);
 
   return (
     <ImageBackground
@@ -29,14 +38,14 @@ const HomeScreen = () => {
           <View style={styles.rightSection}>
             <MovieCarousel
               heading="MOVIES"
-              data={TRENDING_MOVIES}
+              data={nowPlaying.slice(0, 5)}
               cardDimensions={{width: 220, height: 300}}
               testID="trending-carousel"
             />
 
             <MovieCarousel
               heading="SERIES"
-              data={TRENDING_MOVIES}
+              data={popularTVShows.slice(0, 5)}
               cardDimensions={{width: 220, height: 300}}
               testID="trending-carousel"
             />
