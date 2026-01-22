@@ -6,18 +6,17 @@ import {
   View,
   Platform,
   BackHandler,
-  ActivityIndicator,
 } from 'react-native';
 import style from './style';
 import ButtonIcon from '../../components/button/ButtonIcon';
 import {ICONS_IMAGES} from '../../constants/Assets';
 import {COLORS} from '../../styles/Colors';
 import {EXPO_PUBLIC_URL_API} from '@env';
-import Layout from '../../components/Layout';
 import {
   useNavigation,
   useRoute,
   RouteProp,
+  useFocusEffect,
 } from '@amazon-devices/react-navigation__native';
 import {AppStackParamList, Screens} from '../../navigation/types';
 import {StackNavigationProp} from '@amazon-devices/react-navigation__stack';
@@ -48,9 +47,17 @@ const DetailPage = () => {
   }, [dispatch, id, type]);
 
   const navigateBack = useCallback(() => {
-    navigation.navigate(Screens.HOME_SCREEN);
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      navigation.navigate(Screens.HOME_SCREEN);
+    }
+
     if (focusId) {
-      focusManager.restoreFocus(`tile_${focusId}`);
+      setTimeout(() => {
+        console.log(`Restoring focus to tile_${focusId}`);
+        focusManager.restoreFocus(`tile_${focusId}`);
+      }, 100);
     }
     return true;
   }, [navigation, focusId]);

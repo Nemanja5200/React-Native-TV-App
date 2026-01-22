@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useRef, useState} from 'react';
+import React, {memo, useCallback, useEffect, useRef, useState} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {useNavigation} from '@amazon-devices/react-navigation__native';
 import {Screens} from '../navigation/types';
@@ -28,13 +28,20 @@ const MovieCard = ({
   const navigation = useNavigation<any>();
   const cardRef = useRef<any>(null);
 
-  const handlePress = useCallback(() => {
-    console.log(`tile_${data.id}`);
-
+  useEffect(() => {
     focusManager.registerFocusCallback(`tile_${data.id}`, () => {
       console.log(`Restoring focus to tile_${data.id}`);
+      console.log('cardRef.current:', cardRef.current);
       cardRef.current?.requestTVFocus();
     });
+
+    return () => {
+      focusManager.unregisterFocusCallback(`tile_${data.id}`);
+    };
+  }, [data.id]);
+
+  const handlePress = useCallback(() => {
+    console.log(`tile_${data.id}`);
 
     navigation.navigate(Screens.DETAILS_SCREEN, {
       id: data.id,
