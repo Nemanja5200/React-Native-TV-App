@@ -4,8 +4,7 @@ export enum Screens {
   HOME_SCREEN = 'HomeScreen',
   DETAILS_SCREEN = 'DetailsScreen',
   PLAYER_SCREEN = 'PlayerScreen',
-  SEARCH_SCREEN = 'SearchScreen',
-  SETTINGS_SCREEN = 'SettingsScreen',
+  MOVIE_SCREEN = 'MovieScreen',
 }
 
 export type AppStackParamList = {
@@ -17,6 +16,5 @@ export type AppStackParamList = {
     type: MediaType;
   };
   [Screens.PLAYER_SCREEN]: {videoUrl: string};
-  [Screens.SEARCH_SCREEN]: undefined;
-  [Screens.SETTINGS_SCREEN]: undefined;
+  [Screens.MOVIE_SCREEN]: undefined;
 };

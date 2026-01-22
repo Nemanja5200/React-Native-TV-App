@@ -6,17 +6,24 @@ import {COLORS} from '../styles/Colors';
 import FocusableElement from './FocusableElement';
 import {focusManager} from '../utils/FocusManager';
 import {EXPO_PUBLIC_URL_API} from '@env';
-import {Movie, TVShow} from '../types/TMBDTypes';
+import {Movie, MovieWithHeroPoster, TVShow} from '../types/TMBDTypes';
 import {MediaType} from '../constants/Media';
 
 interface MovieCardProps {
-  data: Movie | TVShow;
+  data: Movie | TVShow | MovieWithHeroPoster;
   type: MediaType;
   width: number;
   height: number;
+  onCardFocus?: (item: Movie | TVShow | MovieWithHeroPoster) => void;
 }
 
-const MovieCard = ({data, width, height, type}: MovieCardProps) => {
+const MovieCard = ({
+  data,
+  width,
+  height,
+  type,
+  onCardFocus,
+}: MovieCardProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const navigation = useNavigation<any>();
   const cardRef = useRef<any>(null);
@@ -41,7 +48,10 @@ const MovieCard = ({data, width, height, type}: MovieCardProps) => {
     <FocusableElement
       ref={cardRef}
       style={styles.card}
-      onFocus={() => setIsFocused(true)}
+      onFocus={() => {
+        onCardFocus?.(data);
+        setIsFocused(true);
+      }}
       onBlur={() => setIsFocused(false)}
       onPress={handlePress}>
       <View style={styles.card}>

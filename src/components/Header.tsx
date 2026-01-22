@@ -28,6 +28,7 @@ const Header = () => {
             <NavItem
               key={item.id}
               ref={navRefs[index]}
+              route={item.route}
               title={item.title}
               hasTVPreferredFocus={isFirstItem}
               nextFocusRight={

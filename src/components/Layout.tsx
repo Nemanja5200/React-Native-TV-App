@@ -7,21 +7,33 @@ type Props = {
   showHeader?: boolean;
 };
 
-const Layout = ({children, showHeader = true, headerRef}: Props) => {
+const Layout = ({showHeader = true, children}) => {
   return (
     <View style={styles.container}>
-      {showHeader && <Header />}
-      <View style={styles.content}>{children}</View>
+      {children}
+
+      <View style={[styles.headerOverlay, !showHeader && styles.hidden]}>
+        <Header />
+      </View>
     </View>
   );
 };
+
 export default memo(Layout);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  content: {
-    flex: 1,
+  headerOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1000,
+  },
+  hidden: {
+    opacity: 0,
+    pointerEvents: 'none',
   },
 });

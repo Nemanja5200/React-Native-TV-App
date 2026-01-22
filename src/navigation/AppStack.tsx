@@ -3,19 +3,33 @@ import {createStackNavigator} from '@amazon-devices/react-navigation__stack';
 import {Screens, AppStackParamList} from './types';
 import HomeScreen from '../screens/HomeScreen';
 import DetailsScreen from '../screens/DetailPage/DetailScreen';
+import MovieScreen from '../screens/MovieScreen';
+import Layout from '../components/Layout';
+import {useNavigationState} from '@amazon-devices/react-navigation__native';
 
 const Stack = createStackNavigator<AppStackParamList>();
 
+const ROUTES_WITHOUT_HEADER = [Screens.DETAILS_SCREEN];
+
 const AppStack = () => {
+  const currentScreen = useNavigationState(
+    (state) => state?.routes?.[state.index]?.name,
+  );
+
+  const shouldShowHeader = !ROUTES_WITHOUT_HEADER.includes(currentScreen);
+
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-        animationEnabled: false,
-      }}>
-      <Stack.Screen name={Screens.HOME_SCREEN} component={HomeScreen} />
-      <Stack.Screen name={Screens.DETAILS_SCREEN} component={DetailsScreen} />
-    </Stack.Navigator>
+    <Layout showHeader={shouldShowHeader}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          animationEnabled: false,
+        }}>
+        <Stack.Screen name={Screens.HOME_SCREEN} component={HomeScreen} />
+        <Stack.Screen name={Screens.DETAILS_SCREEN} component={DetailsScreen} />
+        <Stack.Screen name={Screens.MOVIE_SCREEN} component={MovieScreen} />
+      </Stack.Navigator>
+    </Layout>
   );
 };
 

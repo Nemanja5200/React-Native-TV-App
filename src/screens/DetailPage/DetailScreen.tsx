@@ -150,22 +150,20 @@ const DetailPage = () => {
       source={{uri: imageUrl}}
       style={detailStyle.page}
       resizeMode="cover">
-      <Layout showHeader={false}>
-        <View style={detailStyle.overlay}>
-          <View style={[detailStyle.inColumn, detailStyle.body]}>
-            {Metadata}
-            <View style={[detailStyle.inRow, {marginTop: 20}]}>
-              <Image source={{uri: posterUrl}} style={detailStyle.vebImage} />
-              <View style={[detailStyle.inColumn, {paddingLeft: 70}]}>
-                <Text style={[detailStyle.textBig, detailStyle.title]}>
-                  {details.title}
-                </Text>
-                {Description}
-              </View>
+      <View style={detailStyle.overlay}>
+        <View style={[detailStyle.inColumn, detailStyle.body]}>
+          {Metadata}
+          <View style={[detailStyle.inRow, {marginTop: 20}]}>
+            <Image source={{uri: posterUrl}} style={detailStyle.vebImage} />
+            <View style={[detailStyle.inColumn, {paddingLeft: 70}]}>
+              <Text style={[detailStyle.textBig, detailStyle.title]}>
+                {details.title}
+              </Text>
+              {Description}
             </View>
           </View>
         </View>
-      </Layout>
+      </View>
     </ImageBackground>
   );
 };

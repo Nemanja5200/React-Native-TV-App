@@ -203,6 +203,12 @@ export interface Movie {
   id: number;
   poster: string | null;
   title: string;
+  backdrop_path: string | null;
+}
+
+export interface MovieWithHeroPoster extends Movie {
+  heroPoster: string | null;
+  overview: string | null;
 }
 
 export interface Details {

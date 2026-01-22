@@ -4,6 +4,7 @@ import {tmdbService} from '../../service/tmbdService';
 import type {
   Details,
   Movie,
+  MovieWithHeroPoster,
   SeriesDetails,
   TVShow,
 } from '../../types/TMBDTypes';
@@ -12,6 +13,8 @@ interface MoviesState {
   nowPlaying: Movie[];
   popularTVShows: TVShow[];
   details: Details | SeriesDetails | null;
+  upcomingMoviesWithDetails: MovieWithHeroPoster[];
+  upcomingMovies: Movie[];
   isLoading: boolean;
   error: string | null;
 }
@@ -19,6 +22,8 @@ interface MoviesState {
 const initialState: MoviesState = {
   nowPlaying: [],
   popularTVShows: [],
+  upcomingMovies: [],
+  upcomingMoviesWithDetails: [],
   details: null,
   isLoading: false,
   error: null,
@@ -50,6 +55,46 @@ export const fetchDetails = createAsyncThunk(
     return response;
   },
 );
+
+export const fetchUpcomingMovies = createAsyncThunk(
+  'upcoming/fetchUpcomingMovies',
+  async () => {
+    const response = await tmdbService.getUpcomingMovies();
+    return response.results;
+  },
+);
+
+export const fetchUpcomingMoviesWithDetails = createAsyncThunk<
+  MovieWithHeroPoster[]
+>('upcoming/fetchUpcomingMoviesWithDetails', async () => {
+  const response = await tmdbService.getUpcomingMovies();
+  const movies = response.results;
+
+  const moviesWithDetails: MovieWithHeroPoster[] = await Promise.all(
+    movies.map(async (movie): Promise<MovieWithHeroPoster> => {
+      try {
+        const details = await tmdbService.getMovieDetails(movie.id);
+
+        return {
+          ...movie,
+          heroPoster: details.heroPoster ?? movie.backdrop_path ?? null,
+          overview: details.overview || null,
+        };
+      } catch (error) {
+        console.error(`Failed to fetch details for movie ${movie.id}:`, error);
+
+        return {
+          ...movie,
+          heroPoster: movie.backdrop_path ?? null,
+          overview: null,
+        };
+      }
+    }),
+  );
+
+  return moviesWithDetails;
+});
+
 const moviesSlice = createSlice({
   name: 'movies',
   initialState,
@@ -73,12 +118,10 @@ const moviesSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
-
       .addCase(fetchPopularTVShows.fulfilled, (state, action) => {
         state.isLoading = false;
         state.popularTVShows = action.payload;
       })
-
       .addCase(fetchPopularTVShows.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message || 'Failed to fetch popular series';
@@ -94,7 +137,35 @@ const moviesSlice = createSlice({
       })
       .addCase(fetchDetails.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message || 'Failt to fetch details';
+        state.error = action.error.message || 'Failed to fetch details';
+      })
+
+      .addCase(fetchUpcomingMovies.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchUpcomingMovies.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.upcomingMovies = action.payload;
+      })
+      .addCase(fetchUpcomingMovies.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message || 'Failed to fetch upcoming Movies';
+      })
+
+      .addCase(fetchUpcomingMoviesWithDetails.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchUpcomingMoviesWithDetails.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.upcomingMoviesWithDetails = action.payload;
+      })
+      .addCase(fetchUpcomingMoviesWithDetails.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error =
+          action.error.message ||
+          'Failed to fetch upcoming movies with details';
       });
   },
 });

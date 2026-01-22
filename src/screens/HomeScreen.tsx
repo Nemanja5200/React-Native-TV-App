@@ -30,30 +30,28 @@ const HomeScreen = () => {
       source={IMAGE.BACKGROUND}
       style={styles.container}
       resizeMode="cover">
-      <Layout showHeader={true}>
-        <View style={styles.mainContent}>
-          <View style={styles.rightSection}>
-            <MovieCarousel
-              heading="MOVIES"
-              data={nowPlaying.slice(0, 5)}
-              cardDimensions={{width: 220, height: 300}}
-              testID="trending-carousel"
-              type={MEDIA_TYPE.MOVIE}
-            />
+      <View style={styles.mainContent}>
+        <View style={styles.rightSection}>
+          <MovieCarousel
+            heading="MOVIES"
+            data={nowPlaying.slice(0, 5)}
+            cardDimensions={{width: 220, height: 300}}
+            testID="trending-carousel"
+            type={MEDIA_TYPE.MOVIE}
+          />
 
-            <MovieCarousel
-              heading="SERIES"
-              data={popularTVShows.slice(0, 5)}
-              cardDimensions={{width: 220, height: 300}}
-              testID="trending-carousel"
-              type={MEDIA_TYPE.SERIES}
-            />
-          </View>
-          <View style={styles.leftSection}>
-            <TopWatched />
-          </View>
+          <MovieCarousel
+            heading="SERIES"
+            data={popularTVShows.slice(0, 5)}
+            cardDimensions={{width: 220, height: 300}}
+            testID="trending-carousel"
+            type={MEDIA_TYPE.SERIES}
+          />
         </View>
-      </Layout>
+        <View style={styles.leftSection}>
+          <TopWatched />
+        </View>
+      </View>
     </ImageBackground>
   );
 };
@@ -63,6 +61,7 @@ export default React.memo(HomeScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 100,
   },
   mainContent: {
     flex: 1,
