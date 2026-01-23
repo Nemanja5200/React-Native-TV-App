@@ -29,19 +29,22 @@ const MovieCard = ({
   const cardRef = useRef<any>(null);
 
   useEffect(() => {
-    focusManager.registerFocusCallback(`tile_${data.id}`, () => {
-      console.log(`Restoring focus to tile_${data.id}`);
-      console.log('cardRef.current:', cardRef.current);
-      cardRef.current?.requestTVFocus();
-    });
-
-    return () => {
-      focusManager.unregisterFocusCallback(`tile_${data.id}`);
-    };
+    console.log(data.id);
+    setTimeout(() => {
+      focusManager.registerFocusCallback(`tile_${data.id}`, () => {
+        console.log(`Restoring focus to tile_${data.id}`);
+        console.log('cardRef.current:', cardRef.current);
+        cardRef.current?.requestTVFocus();
+      });
+    }, 1000);
   }, [data.id]);
 
   const handlePress = useCallback(() => {
     console.log(`tile_${data.id}`);
+    focusManager.registerFocusCallback(`tile_${data.id}`, () => {
+      console.log(`Restoring focus to tile_${data.id}`);
+      cardRef.current?.requestTVFocus();
+    });
 
     navigation.navigate(Screens.DETAILS_SCREEN, {
       id: data.id,
