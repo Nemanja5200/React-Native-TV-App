@@ -6,10 +6,11 @@ import DetailsScreen from '../screens/DetailPage/DetailScreen';
 import MovieScreen from '../screens/MovieScreen';
 import Layout from '../components/Layout';
 import {useNavigationState} from '@amazon-devices/react-navigation__native';
+import PlayerScreen from '../screens/PlayerScreen';
 
 const Stack = createStackNavigator<AppStackParamList>();
 
-const ROUTES_WITHOUT_HEADER = [Screens.DETAILS_SCREEN];
+const ROUTES_WITHOUT_HEADER = [Screens.DETAILS_SCREEN, Screens.PLAYER_SCREEN];
 
 const AppStack = () => {
   const currentScreen = useNavigationState(
@@ -24,10 +25,12 @@ const AppStack = () => {
         screenOptions={{
           headerShown: false,
           animationEnabled: false,
+          detachInactiveScreens: false,
         }}>
         <Stack.Screen name={Screens.HOME_SCREEN} component={HomeScreen} />
         <Stack.Screen name={Screens.DETAILS_SCREEN} component={DetailsScreen} />
         <Stack.Screen name={Screens.MOVIE_SCREEN} component={MovieScreen} />
+        <Stack.Screen name={Screens.PLAYER_SCREEN} component={PlayerScreen} />
       </Stack.Navigator>
     </Layout>
   );

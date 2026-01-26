@@ -41,10 +41,10 @@ const MovieCard = ({
 
   const handlePress = useCallback(() => {
     console.log(`tile_${data.id}`);
-    focusManager.registerFocusCallback(`tile_${data.id}`, () => {
-      console.log(`Restoring focus to tile_${data.id}`);
-      cardRef.current?.requestTVFocus();
-    });
+    // focusManager.registerFocusCallback(`tile_${data.id}`, () => {
+    //   console.log(`Restoring focus to tile_${data.id}`);
+    //   cardRef.current?.requestTVFocus();
+    // });
 
     navigation.navigate(Screens.DETAILS_SCREEN, {
       id: data.id,

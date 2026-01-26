@@ -16,7 +16,6 @@ import {
   useNavigation,
   useRoute,
   RouteProp,
-  useFocusEffect,
 } from '@amazon-devices/react-navigation__native';
 import {AppStackParamList, Screens} from '../../navigation/types';
 import {StackNavigationProp} from '@amazon-devices/react-navigation__stack';
@@ -61,6 +60,10 @@ const DetailPage = () => {
     }
     return true;
   }, [navigation, focusId]);
+
+  const onClickWatchNow = useCallback(() => {
+    navigation.navigate(Screens.PLAYER_SCREEN);
+  });
 
   useEffect(() => {
     if (Platform.isTV) {
@@ -116,7 +119,7 @@ const DetailPage = () => {
       </Text>
       <ButtonIcon
         hasTVPreferredFocus={true}
-        onClick={() => {}}
+        onClick={onClickWatchNow}
         icon={ICONS_IMAGES.PLAY_IMAGE}
         width={286}
         height={78}

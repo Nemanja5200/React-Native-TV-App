@@ -25,17 +25,21 @@
     "@amazon-devices/react-native-gesture-handler": "^2.0.1758683737",
     "@amazon-devices/react-native-kepler": "^2.0.0",
     "@amazon-devices/react-native-vector-icons": "^2.0.1758683737",
+    "@amazon-devices/react-native-w3cmedia": "^2.1.99",
     "@amazon-devices/react-navigation__native": "^7.0.1758683737",
     "@amazon-devices/react-navigation__stack": "^7.0.1758683737",
     "@amazon-devices/shopify__flash-list": "^2.0.1758683737",
     "@reduxjs/toolkit": "^2.11.2",
     "axios": "^1.13.2",
+    "base-64": "^1.0.0",
     "expo-font": "^14.0.10",
+    "fastestsmallesttextencoderdecoder": "1.0.22",
     "react": "18.2.0",
     "react-native": "0.72.0",
     "react-native-config": "^1.6.1",
     "react-native-dotenv": "^3.4.11",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "xmldom": "0.6.0"
   },
   "devDependencies": {
     "@amazon-devices/kepler-cli-platform": "^0",

@@ -15,5 +15,6 @@
     "resolveJsonModule": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "babel.config.js", "metro.config.js"]
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js" , "src/shakaplayer/dist"]
+  "typeRoots": ["src/w3cmedia/shakaplayer" , "node_modules/@types"]
 }
