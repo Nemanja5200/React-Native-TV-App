@@ -1,183 +1,84 @@
-import {memo, useCallback, useEffect, useRef, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  useWindowDimensions,
-  Platform,
-  BackHandler,
-} from 'react-native';
-import {
-  VideoPlayer,
-  KeplerVideoSurfaceView,
-  KeplerCaptionsView,
-} from '@amazon-devices/react-native-w3cmedia';
-import {
-  ShakaPlayer,
-  ShakaPlayerSettings,
-} from '../mediaPlayer/shakaplayer/ShakaPlayer';
-import {
-  useNavigation,
-  useRoute,
-  RouteProp,
-} from '@amazon-devices/react-navigation__native';
-import {AppStackParamList, Screens} from '../navigation/types';
-import {StackNavigationProp} from '@amazon-devices/react-navigation__stack';
-
-const AUTOPLAY = true;
-const DEFAULT_ABR_WIDTH: number = Platform.isTV ? 3840 : 1919;
-const DEFAULT_ABR_HEIGHT: number = Platform.isTV ? 2160 : 1079;
-
-type PlayerScreenNavigationProp = StackNavigationProp<AppStackParamList>;
-type PlayerScreenRouteProp = RouteProp<
-  AppStackParamList,
-  Screens.PLAYER_SCREEN
->;
+import React, {memo, useCallback, useRef, useState} from 'react';
+import {View, StyleSheet} from 'react-native';
+import LinearGradient from '@amazon-devices/react-linear-gradient';
+import PlayerButton from '../components/button/PlayerButton';
+import Player, {PlayerRef} from '../components/Player';
+import PlayerControls from '../components/PlayerControls';
+import {ICONS_IMAGES} from '../constants/Icons';
+import {useNavigation} from '@amazon-devices/react-navigation__native';
+import {Screens} from '../navigation/types';
 
 const PlayerScreen = () => {
-  const navigation = useNavigation<PlayerScreenNavigationProp>();
-  const route = useRoute<PlayerScreenRouteProp>();
-  const {width: deviceWidth, height: deviceHeight} = useWindowDimensions();
+  const [showControls] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const navigation = useNavigation<any>();
+  const playerRef = useRef<PlayerRef>(null);
 
-  // Get video URI from route params or use default
-  const videoUri =
-    route.params?.uri ??
-    'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
-  const drmScheme = route.params?.drmScheme ?? '';
-  const drmLicenseUri = route.params?.drmLicenseUri ?? '';
-
-  const currShakaPlayerSettings = useRef<ShakaPlayerSettings>({
-    secure: false,
-    abrEnabled: true,
-    abrMaxWidth: DEFAULT_ABR_WIDTH,
-    abrMaxHeight: DEFAULT_ABR_HEIGHT,
-  });
-
-  const player = useRef<any>(null);
-  const videoPlayer = useRef<VideoPlayer | null>(null);
-  const [isReady, setIsReady] = useState(false);
-  const [playerSettings] = useState<ShakaPlayerSettings>(
-    currShakaPlayerSettings.current,
-  );
-
-  const content = {
-    secure: 'false',
-    uri: videoUri,
-    drm_scheme: drmScheme,
-    drm_license_uri: drmLicenseUri,
-  };
-
-  const cleanupPlayer = useCallback(async () => {
-    console.log('PlayerScreen: cleaning up player');
-    if (player.current) {
-      player.current.unload();
-      player.current = null;
+  const handlePlayPause = useCallback(() => {
+    if (isPlaying) {
+      playerRef.current?.pause();
+    } else {
+      playerRef.current?.play();
     }
-    if (videoPlayer.current) {
-      videoPlayer.current.removeEventListener('ended', onEnded);
-      videoPlayer.current.removeEventListener('error', onError);
-      await videoPlayer.current.deinitialize();
-      // @ts-ignore
-      global.gmedia = null;
-      videoPlayer.current = null;
-    }
+    setIsPlaying(!isPlaying);
+  }, [isPlaying]);
+
+  const handleSeekForward = useCallback(() => {
+    playerRef.current?.seekFront();
   }, []);
 
-  const navigateBack = useCallback(async () => {
-    await cleanupPlayer();
+  const handleSeekBackward = useCallback(() => {
+    playerRef.current?.seekBack();
+  }, []);
+
+  const handleBack = useCallback(() => {
     if (navigation.canGoBack()) {
       navigation.goBack();
     } else {
       navigation.navigate(Screens.HOME_SCREEN);
     }
-    return true;
-  }, [navigation, cleanupPlayer]);
-
-  const onEnded = useCallback(async () => {
-    console.log('PlayerScreen: video ended');
-    await navigateBack();
-  }, [navigateBack]);
-
-  const onError = useCallback((error: any) => {
-    console.log('PlayerScreen: error occurred', error);
-  }, []);
-
-  const setUpEventListeners = useCallback(() => {
-    console.log('PlayerScreen: setting up event listeners');
-    videoPlayer.current?.addEventListener('ended', onEnded);
-    videoPlayer.current?.addEventListener('error', onError);
-  }, [onEnded, onError]);
-
-  const initializeShaka = useCallback(() => {
-    console.log('PlayerScreen: initializing Shaka player');
-    if (videoPlayer.current !== null) {
-      player.current = new ShakaPlayer(videoPlayer.current, playerSettings);
-    }
-    if (player.current !== null) {
-      player.current.load(content, AUTOPLAY);
-    }
-  }, [playerSettings, content]);
-
-  const initializeVideoPlayer = useCallback(async () => {
-    console.log('PlayerScreen: initializing video player');
-    videoPlayer.current = new VideoPlayer();
-    // @ts-ignore
-    global.gmedia = videoPlayer.current;
-    await videoPlayer.current.initialize();
-    setUpEventListeners();
-    videoPlayer.current.autoplay = AUTOPLAY;
-    initializeShaka();
-    setIsReady(true);
-  }, [setUpEventListeners, initializeShaka]);
-
-  const onSurfaceViewCreated = useCallback((surfaceHandle: string) => {
-    console.log('PlayerScreen: surface created');
-    videoPlayer.current?.setSurfaceHandle(surfaceHandle);
-    videoPlayer.current?.play();
-  }, []);
-
-  const onSurfaceViewDestroyed = useCallback((surfaceHandle: string) => {
-    console.log('PlayerScreen: surface destroyed');
-    videoPlayer.current?.clearSurfaceHandle(surfaceHandle);
-  }, []);
-
-  const onCaptionViewCreated = useCallback((captionsHandle: string) => {
-    console.log('PlayerScreen: caption view created');
-    videoPlayer.current?.setCaptionViewHandle(captionsHandle);
-  }, []);
-
-  // Initialize player on mount
-  useEffect(() => {
-    console.log('PlayerScreen: mounting');
-    initializeVideoPlayer();
-
-    return () => {
-      console.log('PlayerScreen: unmounting');
-      cleanupPlayer();
-    };
-  }, []);
-
-  // Handle back button
-  useEffect(() => {
-    if (Platform.isTV) {
-      const backHandler = BackHandler.addEventListener(
-        'hardwareBackPress',
-        navigateBack,
-      );
-      return () => backHandler.remove();
-    }
-  }, [navigateBack]);
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
-      <KeplerVideoSurfaceView
-        style={[styles.surfaceView, {width: deviceWidth, height: deviceHeight}]}
-        onSurfaceViewCreated={onSurfaceViewCreated}
-        onSurfaceViewDestroyed={onSurfaceViewDestroyed}
-      />
-      <KeplerCaptionsView
-        onCaptionViewCreated={onCaptionViewCreated}
-        style={styles.captionView}
-      />
+      <Player ref={playerRef} />
+
+      {showControls && (
+        <View style={styles.overlay}>
+          {/* Bottom gradient */}
+          <LinearGradient
+            colors={['transparent', 'rgba(0,0,0,0.7)', 'rgba(0,0,0,0.9)']}
+            locations={[0, 0.5, 1]}
+            style={styles.bottomGradient}
+            pointerEvents="none"
+          />
+
+          <View style={styles.playerControls}>
+            <View style={styles.backButton}>
+              <PlayerButton
+                onClick={handleBack}
+                icon={ICONS_IMAGES.BACK}
+                width={80}
+                height={80}
+                radius={40}
+                size={32}
+                color="rgba(0,0,0,0.7)"
+                borderColor="rgba(255,255,255,0.3)"
+                hasTVPreferredFocus
+              />
+            </View>
+
+            <View style={styles.navButtons}>
+              <PlayerControls
+                isPlaying={isPlaying}
+                onPlayPause={handlePlayPause}
+                onSeekForward={handleSeekForward}
+                onSeekBackward={handleSeekBackward}
+              />
+            </View>
+          </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -187,23 +88,37 @@ export default memo(PlayerScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#000',
   },
-  surfaceView: {
-    zIndex: 0,
-    backgroundColor: '#000000',
+
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 10,
   },
-  captionView: {
-    width: '100%',
-    height: '100%',
-    top: 0,
-    left: 0,
+
+  bottomGradient: {
     position: 'absolute',
-    backgroundColor: 'transparent',
-    flexDirection: 'column',
-    alignItems: 'center',
-    zIndex: 2,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '40%',
+  },
+
+  playerControls: {
+    ...StyleSheet.absoluteFillObject,
+  },
+
+  backButton: {
+    position: 'absolute',
+    top: 848,
+    left: 121,
+  },
+
+  navButtons: {
+    position: 'absolute',
+    top: 836,
+    left: 804,
+    flexDirection: 'row',
+    gap: 40,
   },
 });

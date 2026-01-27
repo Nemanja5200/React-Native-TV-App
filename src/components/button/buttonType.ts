@@ -1,4 +1,4 @@
-import { ImageSourcePropType } from "react-native";
+import {ImageSourcePropType} from 'react-native';
 
 export interface ButtonType {
   onClick: () => void;
@@ -10,4 +10,6 @@ export interface ButtonType {
   height?: number;
   radius?: number;
   hasTVPreferredFocus?: boolean;
+  focusScale?: number;
 }
+
