@@ -374,7 +374,7 @@ export class ShakaPlayer implements PlayerInterface {
       streaming: {
         lowLatencyMode: false,
         inaccurateManifestTolerance: 0,
-        rebufferingGoal: 1,
+        rebufferingGoal: 0.01,
         bufferingGoal: 30,
         bufferingBehind: 30,
         alwaysStreamText: true,

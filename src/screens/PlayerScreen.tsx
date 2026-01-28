@@ -7,6 +7,7 @@ import PlayerControls from '../components/PlayerControls';
 import {ICONS_IMAGES} from '../constants/Icons';
 import {useNavigation} from '@amazon-devices/react-navigation__native';
 import {Screens} from '../navigation/types';
+import Seekbar from '../components/Seekbar';
 
 const PlayerScreen = () => {
   const [showControls] = useState(true);
@@ -76,6 +77,13 @@ const PlayerScreen = () => {
                 onSeekBackward={handleSeekBackward}
               />
             </View>
+            <View style={styles.seekBar}>
+              <Seekbar
+                playerRef={playerRef}
+                onSeekStart={() => setIsPlaying(false)}
+                onSeekEnd={() => setIsPlaying(true)}
+              />
+            </View>
           </View>
         </View>
       )}
@@ -120,5 +128,13 @@ const styles = StyleSheet.create({
     left: 804,
     flexDirection: 'row',
     gap: 40,
+  },
+  seekBar: {
+    width: 1690,
+    height: 31,
+    position: 'absolute',
+    top: 961,
+    left: 115,
+    marginTop: 30,
   },
 });

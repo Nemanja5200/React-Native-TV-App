@@ -1,9 +1,10 @@
-import {
+import React, {
   forwardRef,
   memo,
   useCallback,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -35,6 +36,7 @@ export interface PlayerRef {
   pause: () => void;
   seekFront: () => void;
   seekBack: () => void;
+  getVideoPlayer: () => VideoPlayer | null;
 }
 
 const Player = forwardRef<PlayerRef>((_, ref) => {
@@ -57,10 +59,13 @@ const Player = forwardRef<PlayerRef>((_, ref) => {
     currShakaPlayerSettings.current,
   );
 
-  const content = {
-    secure: 'false',
-    uri: videoUri,
-  };
+  const content = useMemo(
+    () => ({
+      secure: 'false',
+      uri: videoUri,
+    }),
+    [videoUri],
+  );
 
   useImperativeHandle(ref, () => ({
     play: () => {
@@ -75,12 +80,9 @@ const Player = forwardRef<PlayerRef>((_, ref) => {
     seekBack: () => {
       player.current?.seekBack();
     },
-  }));
 
-  const onEnded = useCallback(async () => {
-    console.log('PlayerScreen: video ended');
-    await navigateBack();
-  }, []);
+    getVideoPlayer: () => videoPlayer.current,
+  }));
 
   const onError = useCallback((error: any) => {
     console.log('PlayerScreen: error occurred', error);
@@ -93,17 +95,15 @@ const Player = forwardRef<PlayerRef>((_, ref) => {
       player.current = null;
     }
     if (videoPlayer.current) {
-      videoPlayer.current.removeEventListener('ended', onEnded);
-      videoPlayer.current.removeEventListener('error', onError);
       await videoPlayer.current.deinitialize();
       // @ts-ignore
       global.gmedia = null;
       videoPlayer.current = null;
     }
-  }, [onEnded, onError]);
+  }, []);
 
-  const navigateBack = useCallback(async () => {
-    await cleanupPlayer();
+  const navigateBack = useCallback(() => {
+    cleanupPlayer();
     if (navigation.canGoBack()) {
       navigation.goBack();
     } else {
@@ -111,6 +111,11 @@ const Player = forwardRef<PlayerRef>((_, ref) => {
     }
     return true;
   }, [navigation, cleanupPlayer]);
+
+  const onEnded = useCallback(async () => {
+    console.log('PlayerScreen: video ended');
+    navigateBack();
+  }, [navigateBack]);
 
   const setUpEventListeners = useCallback(() => {
     console.log('PlayerScreen: setting up event listeners');
@@ -170,7 +175,10 @@ const Player = forwardRef<PlayerRef>((_, ref) => {
     if (Platform.isTV) {
       const backHandler = BackHandler.addEventListener(
         'hardwareBackPress',
-        navigateBack,
+        () => {
+          navigateBack();
+          return true;
+        },
       );
       return () => backHandler.remove();
     }
