@@ -14,7 +14,7 @@ interface MovieCardProps {
   type: MediaType;
   width: number;
   height: number;
-  onCardFocus?: (item: Movie | TVShow | MovieWithHeroPoster) => void;
+  onCardFocus?: (item: Movie | TVShow | MovieWithHeroPoster, ref: any) => void;
 }
 
 const MovieCard = ({
@@ -39,13 +39,15 @@ const MovieCard = ({
     }, 1000);
   }, [data.id]);
 
-  const handlePress = useCallback(() => {
+  const getRef = useCallback(() => {
     console.log(`tile_${data.id}`);
-    // focusManager.registerFocusCallback(`tile_${data.id}`, () => {
-    //   console.log(`Restoring focus to tile_${data.id}`);
-    //   cardRef.current?.requestTVFocus();
-    // });
+    focusManager.registerFocusCallback(`tile_${data.id}`, () => {
+      console.log(`Restoring focus to tile_${data.id}`);
+      cardRef.current?.requestTVFocus();
+    });
+  }, [data.id]);
 
+  const handlePress = useCallback(() => {
     navigation.navigate(Screens.DETAILS_SCREEN, {
       id: data.id,
       title: data.title,
@@ -59,8 +61,9 @@ const MovieCard = ({
       ref={cardRef}
       style={styles.card}
       onFocus={() => {
-        onCardFocus?.(data);
+        onCardFocus?.(data, cardRef.current);
         setIsFocused(true);
+        getRef();
       }}
       onBlur={() => setIsFocused(false)}
       onPress={handlePress}>

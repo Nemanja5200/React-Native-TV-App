@@ -26,6 +26,7 @@
     "@amazon-devices/react-native-kepler": "^2.0.0",
     "@amazon-devices/react-native-vector-icons": "^2.0.1758683737",
     "@amazon-devices/react-native-w3cmedia": "^2.1.99",
+    "@amazon-devices/react-navigation__drawer": "^7.0.1758683737",
     "@amazon-devices/react-navigation__native": "^7.0.1758683737",
     "@amazon-devices/react-navigation__stack": "^7.0.1758683737",
     "@amazon-devices/shopify__flash-list": "^2.0.1758683737",

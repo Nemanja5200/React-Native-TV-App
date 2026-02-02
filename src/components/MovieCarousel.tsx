@@ -9,7 +9,7 @@ import {
 import {COLORS} from '../styles/Colors';
 import MovieCard from './MovieCard';
 import {Movie, MovieWithHeroPoster, TVShow} from '../types/TMBDTypes';
-import {MediaType, MEDIA_TYPE} from '../constants/Media';
+import {MediaType} from '../constants/Media';
 
 interface MovieCarouselProps {
   heading?: string;
@@ -18,7 +18,7 @@ interface MovieCarouselProps {
   testID?: string;
   isLastItem?: boolean;
   type: MediaType;
-  onCardFocus?: (item: Movie | TVShow | MovieWithHeroPoster) => void;
+  onCardFocus?: (item: Movie | TVShow | MovieWithHeroPoster, ref: any) => void;
 }
 
 const SPACING = {

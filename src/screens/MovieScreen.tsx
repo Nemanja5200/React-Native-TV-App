@@ -29,13 +29,13 @@ const MovieScreen = () => {
     dispatch(fetchUpcomingMoviesWithDetails());
   }, [dispatch]);
 
-  if (isLoading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>Loading movies...</Text>
-      </View>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <View style={styles.loadingContainer}>
+  //       <Text style={styles.loadingText}>Loading movies...</Text>
+  //     </View>
+  //   );
+  // }
 
   if (error) {
     return (

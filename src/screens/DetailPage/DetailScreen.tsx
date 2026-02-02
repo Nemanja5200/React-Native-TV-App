@@ -46,17 +46,21 @@ const DetailPage = () => {
   }, [dispatch, id, type]);
 
   const navigateBack = useCallback(() => {
-    if (navigation.canGoBack()) {
-      navigation.goBack();
-    } else {
-      navigation.navigate(Screens.HOME_SCREEN);
+    if (focusId) {
+      console.log(`Restoring focus to tile_${focusId}`);
+      focusManager.restoreFocus(`tile_${focusId}`);
     }
+    setTimeout(() => {
+      if (navigation.canGoBack()) {
+        navigation.goBack();
+      } else {
+        navigation.navigate(Screens.HOME_SCREEN);
+      }
+    }, 1);
 
     if (focusId) {
-      setTimeout(() => {
-        console.log(`Restoring focus to tile_${focusId}`);
-        focusManager.restoreFocus(`tile_${focusId}`);
-      }, 100);
+      console.log(`Restoring focus to tile_${focusId}`);
+      focusManager.restoreFocus(`tile_${focusId}`);
     }
     return true;
   }, [navigation, focusId]);
@@ -174,6 +178,12 @@ const DetailPage = () => {
           </View>
         </View>
       </View>
+
+      {isLoading && (
+        <View style={detailStyle.overlayLoading}>
+          <Text style={detailStyle.loadingText}>Loading movies...</Text>
+        </View>
+      )}
     </ImageBackground>
   );
 };

@@ -1,7 +1,10 @@
 /**
  * Simple focus restoration manager that avoids passing functions as navigation params
  */
-class FocusManager {
+
+import {FocusManager} from '@amazon-devices/react-native-kepler';
+
+class FocusManagerCustome {
   private focusCallbacks: Map<string, () => void> = new Map();
 
   /**
@@ -41,4 +44,4 @@ class FocusManager {
   }
 }
 
-export const focusManager = new FocusManager();
+export const focusManager = new FocusManagerCustome();

@@ -1,5 +1,7 @@
-import React, {useEffect} from 'react';
-import {ImageBackground, StyleSheet, View} from 'react-native';
+import {FocusManager} from '@amazon-devices/react-native-kepler';
+import {useFocusEffect} from '@amazon-devices/react-navigation__native';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
+import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import Layout from '../components/Layout';
 import MovieCarousel from '../components/MovieCarousel';
 import TopWatched from '../components/TopWatched';
@@ -13,7 +15,9 @@ import {
 
 const HomeScreen = () => {
   const dispatch = useAppDispatch();
-  const {nowPlaying, popularTVShows} = useAppSelector((state) => state.movies);
+  const {nowPlaying, popularTVShows, isLoading} = useAppSelector(
+    (state) => state.movies,
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,6 +56,12 @@ const HomeScreen = () => {
           <TopWatched />
         </View>
       </View>
+
+      {isLoading && (
+        <View style={styles.overlay}>
+          <Text style={styles.loadingText}>Loading movies...</Text>
+        </View>
+      )}
     </ImageBackground>
   );
 };
@@ -84,5 +94,28 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     textAlign: 'center',
     letterSpacing: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#151515',
+  },
+  loadingText: {
+    fontSize: 24,
+    color: '#FFFFFF',
+    fontWeight: '600',
+  },
+
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 999,
   },
 });
