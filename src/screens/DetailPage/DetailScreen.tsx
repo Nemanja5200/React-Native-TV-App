@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import {
   Image,
   ImageBackground,
@@ -16,6 +16,7 @@ import {
   useNavigation,
   useRoute,
   RouteProp,
+  useFocusEffect,
 } from '@amazon-devices/react-navigation__native';
 import {AppStackParamList, Screens} from '../../navigation/types';
 import {StackNavigationProp} from '@amazon-devices/react-navigation__stack';
@@ -40,10 +41,22 @@ const DetailPage = () => {
   const {details, isLoading, error} = useAppSelector((state) => state.movies);
 
   const isTVShow = type === MEDIA_TYPE.SERIES;
+  const watchNowRef = useRef<any>(null);
 
   useEffect(() => {
     dispatch(fetchDetails({id: Number(id), type}));
   }, [dispatch, id, type]);
+
+  useEffect(() => {
+    focusManager.registerFocusCallback(`button_watchnow_${id}`, () => {
+      console.log('Restoring focus to Watch Now button');
+      watchNowRef.current?.requestTVFocus();
+    });
+
+    return () => {
+      focusManager.unregisterFocusCallback(`button_watchnow_${id}`);
+    };
+  }, [id]);
 
   const navigateBack = useCallback(() => {
     if (focusId) {
@@ -56,7 +69,7 @@ const DetailPage = () => {
       } else {
         navigation.navigate(Screens.HOME_SCREEN);
       }
-    }, 1);
+    }, 100);
 
     if (focusId) {
       console.log(`Restoring focus to tile_${focusId}`);
@@ -66,8 +79,10 @@ const DetailPage = () => {
   }, [navigation, focusId]);
 
   const onClickWatchNow = useCallback(() => {
-    navigation.navigate(Screens.PLAYER_SCREEN);
-  });
+    navigation.navigate(Screens.PLAYER_SCREEN, {
+      returnFocusId: `button_watchnow_${id}`,
+    });
+  }, [navigation, id]);
 
   useEffect(() => {
     if (Platform.isTV) {
@@ -122,6 +137,7 @@ const DetailPage = () => {
         {details.overview}
       </Text>
       <ButtonIcon
+        ref={watchNowRef}
         hasTVPreferredFocus={true}
         onClick={onClickWatchNow}
         icon={ICONS_IMAGES.PLAY_IMAGE}

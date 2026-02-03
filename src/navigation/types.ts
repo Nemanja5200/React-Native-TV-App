@@ -15,6 +15,6 @@ export type AppStackParamList = {
     focusId: string;
     type: MediaType;
   };
-  [Screens.PLAYER_SCREEN]: {videoUrl: string};
+  [Screens.PLAYER_SCREEN]: {videoUrl?: string; returnFocusId: string};
   [Screens.MOVIE_SCREEN]: undefined;
 };

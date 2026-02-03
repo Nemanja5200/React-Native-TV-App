@@ -5,15 +5,22 @@ import PlayerButton from '../components/button/PlayerButton';
 import Player, {PlayerRef} from '../components/Player';
 import PlayerControls from '../components/PlayerControls';
 import {ICONS_IMAGES} from '../constants/Icons';
-import {useNavigation} from '@amazon-devices/react-navigation__native';
+import {
+  useNavigation,
+  useRoute,
+} from '@amazon-devices/react-navigation__native';
 import {Screens} from '../navigation/types';
 import Seekbar from '../components/Seekbar';
+import {focusManager} from '../utils/FocusManager';
 
 const PlayerScreen = () => {
   const [showControls] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
   const navigation = useNavigation<any>();
   const playerRef = useRef<PlayerRef>(null);
+  const route = useRoute();
+
+  const {returnFocusId} = route.params;
 
   const handlePlayPause = useCallback(() => {
     if (isPlaying) {
@@ -33,12 +40,17 @@ const PlayerScreen = () => {
   }, []);
 
   const handleBack = useCallback(() => {
-    if (navigation.canGoBack()) {
-      navigation.goBack();
-    } else {
-      navigation.navigate(Screens.HOME_SCREEN);
+    if (returnFocusId) {
+      focusManager.restoreFocus(returnFocusId);
     }
-  }, [navigation]);
+    setTimeout(() => {
+      if (navigation.canGoBack()) {
+        navigation.goBack();
+      } else {
+        navigation.navigate(Screens.HOME_SCREEN);
+      }
+    }, 200);
+  }, [navigation, returnFocusId]);
 
   return (
     <View style={styles.container}>
