@@ -5,6 +5,7 @@ export enum Screens {
   DETAILS_SCREEN = 'DetailsScreen',
   PLAYER_SCREEN = 'PlayerScreen',
   MOVIE_SCREEN = 'MovieScreen',
+  APP_DRAWER = 'AppDrawer',
 }
 
 export type AppStackParamList = {
@@ -17,4 +18,12 @@ export type AppStackParamList = {
   };
   [Screens.PLAYER_SCREEN]: {videoUrl?: string; returnFocusId: string};
   [Screens.MOVIE_SCREEN]: undefined;
+  [Screens.APP_DRAWER]: undefined;
 };
+
+export enum DrawerType {
+  PERMANENT = 'permanent',
+  FRONT = 'front',
+  SLIDE = 'slide',
+  BACK = 'back',
+}

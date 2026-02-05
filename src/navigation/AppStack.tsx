@@ -19,14 +19,15 @@ const AppStack = () => {
 
   const shouldShowHeader = !ROUTES_WITHOUT_HEADER.includes(currentScreen);
 
+  const navigationOptions = {
+    headerShown: false,
+    animationEnabled: false,
+    detachInactiveScreens: false,
+  };
+
   return (
     <Layout showHeader={shouldShowHeader}>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-          animationEnabled: false,
-          detachInactiveScreens: false,
-        }}>
+      <Stack.Navigator screenOptions={navigationOptions}>
         <Stack.Screen name={Screens.HOME_SCREEN} component={HomeScreen} />
         <Stack.Screen name={Screens.DETAILS_SCREEN} component={DetailsScreen} />
         <Stack.Screen name={Screens.MOVIE_SCREEN} component={MovieScreen} />
