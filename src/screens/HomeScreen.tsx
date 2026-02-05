@@ -1,8 +1,5 @@
-import {FocusManager} from '@amazon-devices/react-native-kepler';
-import {useFocusEffect} from '@amazon-devices/react-navigation__native';
-import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import {ImageBackground, StyleSheet, Text, View} from 'react-native';
-import Layout from '../components/Layout';
+import React, {useEffect} from 'react';
+import {ImageBackground, StyleSheet, View} from 'react-native';
 import MovieCarousel from '../components/MovieCarousel';
 import TopWatched from '../components/TopWatched';
 import {IMAGE} from '../constants/Image';
@@ -57,11 +54,11 @@ const HomeScreen = () => {
         </View>
       </View>
 
-      {isLoading && (
-        <View style={styles.overlay}>
-          <Text style={styles.loadingText}>Loading movies...</Text>
-        </View>
-      )}
+      {/* {isLoading && ( */}
+      {/*   <View style={styles.overlay}> */}
+      {/*     <Text style={styles.loadingText}>Loading movies...</Text> */}
+      {/*   </View> */}
+      {/* )} */}
     </ImageBackground>
   );
 };
@@ -113,7 +110,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    backgroundColor: 'rgba(0,0,0,1)',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 999,
