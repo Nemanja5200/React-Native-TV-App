@@ -48,12 +48,14 @@ const MovieCard = ({
   }, [data.id]);
 
   const handlePress = useCallback(() => {
-    navigation.navigate(Screens.DETAILS_SCREEN, {
-      id: data.id,
-      title: data.title,
-      focusId: data.id,
-      type: type,
-    });
+    setTimeout(() => {
+      navigation.navigate(Screens.DETAILS_SCREEN, {
+        id: data.id,
+        title: data.title,
+        focusId: data.id,
+        type: type,
+      });
+    }, 200);
   }, [data, navigation, type]);
 
   return (

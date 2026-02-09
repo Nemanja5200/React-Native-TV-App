@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@amazon-devices/kepler-ui-components": "^2.4.1",
+    "@amazon-devices/lottie-react-native": "^2.0.1758683737",
     "@amazon-devices/react-linear-gradient": "^2.0.1758683737",
     "@amazon-devices/react-native-gesture-handler": "^2.0.1758683737",
     "@amazon-devices/react-native-kepler": "^2.0.0",

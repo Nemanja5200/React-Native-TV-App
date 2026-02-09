@@ -16,7 +16,6 @@ import {
   useNavigation,
   useRoute,
   RouteProp,
-  useFocusEffect,
 } from '@amazon-devices/react-navigation__native';
 import {AppStackParamList, Screens} from '../../navigation/types';
 import {StackNavigationProp} from '@amazon-devices/react-navigation__stack';
@@ -194,12 +193,6 @@ const DetailPage = () => {
           </View>
         </View>
       </View>
-
-      {isLoading && (
-        <View style={detailStyle.overlayLoading}>
-          <Text style={detailStyle.loadingText}>Loading movies...</Text>
-        </View>
-      )}
     </ImageBackground>
   );
 };
