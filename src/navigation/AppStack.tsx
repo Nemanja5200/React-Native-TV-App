@@ -27,16 +27,18 @@ const AppStack = () => {
 
   return (
     <Layout showHeader={shouldShowHeader}>
-      <Stack.Navigator screenOptions={navigationOptions}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          animationEnabled: false,
+          detachPreviousScreen: false,
+        }}>
         <Stack.Screen name={Screens.HOME_SCREEN} component={HomeScreen} />
         <Stack.Screen
           name={Screens.DETAILS_SCREEN}
           component={WithSuspense(DetailsScreen)}
         />
-        <Stack.Screen
-          name={Screens.MOVIE_SCREEN}
-          component={WithSuspense(MovieScreen)}
-        />
+        <Stack.Screen name={Screens.MOVIE_SCREEN} component={MovieScreen} />
         <Stack.Screen
           name={Screens.PLAYER_SCREEN}
           component={WithSuspense(PlayerScreen)}

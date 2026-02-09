@@ -183,6 +183,7 @@ export interface RawSeriesDetails {
 }
 
 export interface SeriesDetails {
+  id: number;
   heroPoster: string;
   title: string;
   overview: string;
@@ -212,6 +213,7 @@ export interface MovieWithHeroPoster extends Movie {
 }
 
 export interface Details {
+  id: number;
   heroPoster: string;
   title: string;
   overview: string;

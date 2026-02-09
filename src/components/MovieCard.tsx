@@ -55,7 +55,7 @@ const MovieCard = ({
         focusId: data.id,
         type: type,
       });
-    }, 200);
+    }, 700);
   }, [data, navigation, type]);
 
   return (

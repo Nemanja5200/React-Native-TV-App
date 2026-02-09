@@ -72,6 +72,7 @@ const ParseTVShow = (rawTVShow: RawTVShow): TVShow => ({
 });
 
 const ParseMovieDetails = (rawDetails: RawDetails): Details => ({
+  id: rawDetails.id,
   title: rawDetails.title,
   genre: rawDetails.genres[0]?.name || 'Unknown',
   country: rawDetails.origin_country[0] || 'Unknown',
@@ -84,6 +85,7 @@ const ParseMovieDetails = (rawDetails: RawDetails): Details => ({
 });
 
 const ParseSeriesDetails = (rawDetails: RawSeriesDetails): Details => ({
+  id: rawDetails.id,
   title: rawDetails.name,
   genre: rawDetails.genres[0]?.name || 'Unknown',
   country: rawDetails.origin_country[0] || 'Unknown',

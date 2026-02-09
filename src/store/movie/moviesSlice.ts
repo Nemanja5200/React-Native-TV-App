@@ -98,7 +98,12 @@ export const fetchUpcomingMoviesWithDetails = createAsyncThunk<
 const moviesSlice = createSlice({
   name: 'movies',
   initialState,
-  reducers: {},
+  reducers: {
+    clearDetails: (state) => {
+      state.details = null;
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchNowPlayingMovies.pending, (state) => {
@@ -170,4 +175,5 @@ const moviesSlice = createSlice({
   },
 });
 
+export const {clearDetails} = moviesSlice.actions;
 export default moviesSlice.reducer;

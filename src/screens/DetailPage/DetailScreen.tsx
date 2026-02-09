@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   Image,
   ImageBackground,
@@ -6,6 +6,7 @@ import {
   View,
   Platform,
   BackHandler,
+  ActivityIndicator,
 } from 'react-native';
 import style from './style';
 import ButtonIcon from '../../components/button/ButtonIcon';
@@ -16,12 +17,13 @@ import {
   useNavigation,
   useRoute,
   RouteProp,
+  useFocusEffect,
 } from '@amazon-devices/react-navigation__native';
 import {AppStackParamList, Screens} from '../../navigation/types';
 import {StackNavigationProp} from '@amazon-devices/react-navigation__stack';
 import {focusManager} from '../../utils/FocusManager';
 import {useAppDispatch, useAppSelector} from '../../store/hooks/hooks';
-import {fetchDetails} from '../../store/movie/moviesSlice';
+import {clearDetails, fetchDetails} from '../../store/movie/moviesSlice';
 import {MEDIA_TYPE} from '../../constants/Media';
 
 type DetailScreenNavigationProp = StackNavigationProp<AppStackParamList>;
@@ -41,10 +43,21 @@ const DetailPage = () => {
 
   const isTVShow = type === MEDIA_TYPE.SERIES;
   const watchNowRef = useRef<any>(null);
+  const isCorrectMovie = details?.id === Number(id);
+  const [isReady, setIsReady] = useState(false);
 
-  useEffect(() => {
-    dispatch(fetchDetails({id: Number(id), type}));
-  }, [dispatch, id, type]);
+  useFocusEffect(
+    useCallback(() => {
+      if (!isCorrectMovie) {
+        setIsReady(false);
+        dispatch(fetchDetails({id: Number(id), type}));
+      } else {
+        setIsReady(true);
+      }
+
+      return () => {};
+    }, [id, type, isCorrectMovie, dispatch]),
+  );
 
   useEffect(() => {
     focusManager.registerFocusCallback(`button_watchnow_${id}`, () => {
@@ -64,6 +77,7 @@ const DetailPage = () => {
     }
     setTimeout(() => {
       if (navigation.canGoBack()) {
+        dispatch(clearDetails());
         navigation.goBack();
       } else {
         navigation.navigate(Screens.HOME_SCREEN);
@@ -75,12 +89,14 @@ const DetailPage = () => {
       focusManager.restoreFocus(`tile_${focusId}`);
     }
     return true;
-  }, [navigation, focusId]);
+  }, [navigation, focusId, dispatch]);
 
   const onClickWatchNow = useCallback(() => {
-    navigation.navigate(Screens.PLAYER_SCREEN, {
-      returnFocusId: `button_watchnow_${id}`,
-    });
+    setTimeout(() => {
+      navigation.navigate(Screens.PLAYER_SCREEN, {
+        returnFocusId: `button_watchnow_${id}`,
+      });
+    }, 5000);
   }, [navigation, id]);
 
   useEffect(() => {
@@ -94,17 +110,17 @@ const DetailPage = () => {
   }, [navigateBack]);
 
   // Loading state
-  // if (isLoading) {
-  //   return (
-  //     <View
-  //       style={[
-  //         detailStyle.page,
-  //         {justifyContent: 'center', alignItems: 'center'},
-  //       ]}>
-  //       <ActivityIndicator size="large" color={COLORS.WHITE} />
-  //     </View>
-  //   );
-  // }
+  if (!isReady || !isCorrectMovie) {
+    return (
+      <View
+        style={[
+          detailStyle.overlayLoading,
+          {justifyContent: 'center', alignItems: 'center'},
+        ]}>
+        <ActivityIndicator size="large" color={COLORS.WHITE} />
+      </View>
+    );
+  }
 
   // Error state
   if (error) {
