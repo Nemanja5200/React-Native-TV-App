@@ -37,13 +37,13 @@ const MovieScreen = () => {
   //   );
   // }
 
-  // if (error) {
-  //   return (
-  //     <View style={styles.errorContainer}>
-  //       <Text style={styles.errorText}>Error: {error}</Text>
-  //     </View>
-  //   );
-  // }
+  if (error) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>Error: {error}</Text>
+      </View>
+    );
+  }
 
   const heroMovie = focusedMovie ?? upcomingMoviesWithDetails[0];
 

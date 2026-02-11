@@ -96,7 +96,7 @@ const DetailPage = () => {
       navigation.navigate(Screens.PLAYER_SCREEN, {
         returnFocusId: `button_watchnow_${id}`,
       });
-    }, 5000);
+    }, 700);
   }, [navigation, id]);
 
   useEffect(() => {
