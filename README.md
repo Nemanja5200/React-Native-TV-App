@@ -275,7 +275,7 @@ src/
 
 ## Resources
 
-- [VegaOS Developer Documentation](https://developer.amazon.com/docs/vega)
+- [VegaOS Developer Documentation](https://developer.amazon.com/docs/vega/vega.html)
 - [TMDB API Documentation](https://developer.themoviedb.org/docs)
 - [Shaka Player Documentation](https://shaka-player-demo.appspot.com/docs/api/tutorial-welcome.html)
 - [React Navigation Documentation](https://reactnavigation.org/docs/getting-started)
